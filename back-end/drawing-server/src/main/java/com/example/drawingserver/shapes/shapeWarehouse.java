@@ -1,9 +1,11 @@
 package com.example.drawingserver.shapes;
 import java.util.Stack;
+import java.util.ArrayList;
 
 public class shapeWarehouse {
-    private Stack<shape> list;
-    private Stack<shape> redo;
+    private Stack<ArrayList<shape>> undo;
+    private Stack<ArrayList<shape>> redo;
+    private ArrayList<shape> shapes;
     private static shapeWarehouse instance;
     private shapeWarehouse(){}
 
@@ -15,20 +17,55 @@ public class shapeWarehouse {
         return instance;
     }
 
-    public void Addshape(shape s)
+    public void addShape(shape s)
     {
-        this.list.push(s);
-    }
-    
-    public shape[] undo(){
-        shape temp = this.list.pop();
-        this.redo.push(temp);
-        return (shape[])this.list.toArray();
+        this.shapes.add(s);
+        this.undo.push(this.shapes);
     }
 
-    public shape[] redo(){
-        shape temp = this.redo.pop();
-        this.list.push(temp);
-        return (shape[])this.list.toArray();
+    public void removeShape(int id)
+    {
+        int index = getShapeIndex(id);
+        this.shapes.remove(index);
+        this.undo.push(this.shapes);
+    }
+    
+    public void copyShape(int id)
+    {
+        /**
+         * to be implemetnted after fixing the cloning
+         */
+    }
+
+    public ArrayList<shape> undo(){
+        ArrayList<shape> temp = this.undo.pop();
+        this.redo.push(temp);
+        return temp;
+    }
+
+    public ArrayList<shape> redo(){
+        ArrayList<shape> temp = this.redo.pop();
+        this.undo.push(temp);
+        return temp;
+    }
+
+    public void editAttribute(shape newObject, int id){
+        int index = getShapeIndex(id);
+        this.shapes.remove(index);
+        this.shapes.add(newObject);
+        this.undo.push(this.shapes);
+    }
+
+    private int getShapeIndex(int id)
+    {
+        int i;
+        for (i = 0; i < this.shapes.size(); i++)
+        {
+            if(this.shapes.get(i).idgetter() == id)
+            {
+                break;
+            }
+        }
+        return i;
     }
 }
