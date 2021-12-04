@@ -1,12 +1,13 @@
 package com.example.drawingserver.shapes;
 
-public class line extends shape{
+class line extends shape{
     
-    line(int x ,int y,int endX,int endY,String stroke,int strokeWidth){
+    line(int id,int x ,int y,int endX,int endY,String stroke,int strokeWidth){
+        this.id=id;
         this.x=x;
         this.y=y;
-        this.val1=endX;
-        this.val2=endY;
+        this.dimension1=endX;
+        this.dimension2=endY;
         this.stroke=stroke;
         this.fill=stroke;
         this.strokeWidth=strokeWidth;

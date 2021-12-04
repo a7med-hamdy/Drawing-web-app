@@ -1,12 +1,13 @@
 package com.example.drawingserver.shapes;
 
-public class ellipse extends geoShape{
+class ellipse extends shape{
     
-    ellipse(int x ,int y,int radiusX,int radiusY,String color,String stroke,int strokeWidth){
+    ellipse(int id,int x ,int y,int radiusX,int radiusY,String color,String stroke,int strokeWidth){
+        this.id=id;
         this.x=x;
         this.y=y;
-        this.val1=radiusX;
-        this.val2=radiusY;
+        this.dimension1=radiusX;
+        this.dimension2=radiusY;
         this.fill=color;
         this.stroke=stroke;
         this.strokeWidth=strokeWidth;
