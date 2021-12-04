@@ -2,8 +2,8 @@ package com.example.drawingserver.shapes;
 
 public class shapeFactroy {
     public shape factorShape(String shape){
-        
-        int x=(int)Math.floor(Math.random());
+        int min=1,max=1000000000;
+        int x=(int)Math.floor(Math.random()*(max-min+1)+min);
         
         if(shape.equalsIgnoreCase("Circle")){
             return new circle(x,100,100,70,"blue","black",4);
