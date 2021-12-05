@@ -1,7 +1,7 @@
 package com.example.drawingserver.shapes;
 
 public class shapeFactroy {
-    public shape factorShape(String shape){
+    public shapeInterface factorShape(String shape){
         int min=1,max=1000000000;
         int x=(int)Math.floor(Math.random()*(max-min+1)+min);
         
