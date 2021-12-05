@@ -30,11 +30,12 @@ public class shapeWarehouse {
         this.undo.push(this.shapes);
     }
     
-    public void copyShape(int id)
+    public shapeInterface copyShape(int id) throws CloneNotSupportedException
     {
-        /**
-         * to be implemetnted after fixing the cloning
-         */
+        int index = getShapeIndex(id);
+        shapeInterface s = this.shapes.get(index);
+        shapeInterface temp = s.clone();
+        return temp;
     }
 
     public ArrayList<shapeInterface> undo(){

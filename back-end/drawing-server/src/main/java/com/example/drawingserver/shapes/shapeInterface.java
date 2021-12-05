@@ -28,6 +28,8 @@ public interface shapeInterface {
     public int idgetter();
 
     public String typegetter();
+
+    public shapeInterface clone() throws CloneNotSupportedException;
     
     public String[] toStrings();
 

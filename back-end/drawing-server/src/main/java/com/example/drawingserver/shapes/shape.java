@@ -72,7 +72,7 @@ class shape implements Cloneable,shapeInterface{
     }
 
     @Override
-    protected shapeInterface clone() throws CloneNotSupportedException {
+    public shapeInterface clone() throws CloneNotSupportedException {
 
         int min=1,max=1000000000;
         int rand=(int)Math.floor(Math.random()*(max-min+1)+min);
