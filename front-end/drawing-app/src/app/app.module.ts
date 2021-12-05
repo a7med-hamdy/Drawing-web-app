@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { KonvaModule } from 'ng2-konva';
 
 import { AppComponent } from './app.component';
 import { CanvasComponent } from './canvas/canvas.component';
@@ -10,7 +11,8 @@ import { CanvasComponent } from './canvas/canvas.component';
     CanvasComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    KonvaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -67,7 +67,18 @@ export class ShapeTranslatorService {
         id: shape.id,
       })
     }
-
+    else if(shape.type == 'triangle'){
+      return new Konva.RegularPolygon({
+        x: shape.x,
+        y: shape.y,
+        sides: shape.dimension1,
+        radius: shape.dimension2,
+        fill:shape.fill,
+        stroke:shape.stroke,
+        strokeWidth:shape.strokeWidth,
+        id: shape.id,
+      })
+    }
     else if(shape.type == 'text'){
       return new Konva.Text({
         x: shape.x,

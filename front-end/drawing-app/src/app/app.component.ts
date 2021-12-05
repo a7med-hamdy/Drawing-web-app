@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { KonvaModule } from 'ng2-konva';
 
 @Component({
   selector: 'app-root',
