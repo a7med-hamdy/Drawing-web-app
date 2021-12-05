@@ -3,6 +3,7 @@ package com.example.drawingserver.shapes;
 class line extends shape{
     
     line(int id,int x ,int y,int endX,int endY,String stroke,int strokeWidth){
+        this.type="line";
         this.id=id;
         this.x=x;
         this.y=y;

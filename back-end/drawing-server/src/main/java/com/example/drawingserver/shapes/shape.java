@@ -1,6 +1,9 @@
 package com.example.drawingserver.shapes;
 
+
 class shape implements Cloneable,shapeInterface{
+    
+    protected String type;
     protected int id;
     protected int x;
     protected int y;
@@ -56,17 +59,42 @@ class shape implements Cloneable,shapeInterface{
         return this.stroke;
    }
 
-    public int strokeWidth(){
+    public int getstrokeWidth(){
         return this.strokeWidth;
     }
+
     public int idgetter(){
         return id;
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public String typegetter(){
+        return type;
     }
 
-    
+    @Override
+    protected shapeInterface clone() throws CloneNotSupportedException {
+
+        int min=1,max=1000000000;
+        int rand=(int)Math.floor(Math.random()*(max-min+1)+min);
+
+        shape a=new shape();
+
+        a.type=this.type;
+        a.id=rand;
+        a.x=this.x;
+        a.y=this.y;
+        a.dimension1=this.dimension1;
+        a.dimension2=this.dimension2;
+        a.fill=this.fill;
+        a.stroke=this.stroke;
+        a.strokeWidth=this.strokeWidth;
+
+        return a;
+    }
+
+
+    public String[] toStrings(){
+        String[] forRequset={type,String.valueOf(id),String.valueOf(x),String.valueOf(y),String.valueOf(dimension1),String.valueOf(dimension2),fill,stroke,String.valueOf(strokeWidth) };
+        return forRequset;
+    }
 }

@@ -3,6 +3,7 @@ package com.example.drawingserver.shapes;
 class ellipse extends shape{
     
     ellipse(int id,int x ,int y,int radiusX,int radiusY,String color,String stroke,int strokeWidth){
+        this.type="ellipse";
         this.id=id;
         this.x=x;
         this.y=y;

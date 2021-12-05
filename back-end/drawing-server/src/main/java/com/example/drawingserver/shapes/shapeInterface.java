@@ -1,6 +1,7 @@
 package com.example.drawingserver.shapes;
 
 public interface shapeInterface {
+    
 
     public void setPostion( int x, int y);
 
@@ -22,7 +23,12 @@ public interface shapeInterface {
 
     public String getStrokeColor();
 
-    public int strokeWidth();
+    public int getstrokeWidth();
 
     public int idgetter();
+
+    public String typegetter();
+    
+    public String[] toStrings();
+
 }

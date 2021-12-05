@@ -3,6 +3,7 @@ package com.example.drawingserver.shapes;
 class square extends shape{
     
     square(int id,int x ,int y,int length,String color,String stroke,int strokeWidth){
+        this.type="square";
         this.id=id;
         this.x=x;
         this.y=y;

@@ -3,6 +3,7 @@ package com.example.drawingserver.shapes;
 class rectangle extends shape{
     
     rectangle(int id,int x ,int y,int width,int height,String color,String stroke,int strokeWidth){
+        this.type="rectangle";
         this.id=id;
         this.x=x;
         this.y=y;
