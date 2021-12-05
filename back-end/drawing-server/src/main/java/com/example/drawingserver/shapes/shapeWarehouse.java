@@ -3,9 +3,9 @@ import java.util.Stack;
 import java.util.ArrayList;
 
 public class shapeWarehouse {
-    private Stack<ArrayList<shape>> undo;
-    private Stack<ArrayList<shape>> redo;
-    private ArrayList<shape> shapes;
+    private Stack<ArrayList<shapeInterface>> undo;
+    private Stack<ArrayList<shapeInterface>> redo;
+    private ArrayList<shapeInterface> shapes;
     private static shapeWarehouse instance;
     private shapeWarehouse(){}
 
@@ -17,7 +17,7 @@ public class shapeWarehouse {
         return instance;
     }
 
-    public void addShape(shape s)
+    public void addShape(shapeInterface s)
     {
         this.shapes.add(s);
         this.undo.push(this.shapes);
@@ -37,19 +37,19 @@ public class shapeWarehouse {
          */
     }
 
-    public ArrayList<shape> undo(){
-        ArrayList<shape> temp = this.undo.pop();
+    public ArrayList<shapeInterface> undo(){
+        ArrayList<shapeInterface> temp = this.undo.pop();
         this.redo.push(temp);
         return temp;
     }
 
-    public ArrayList<shape> redo(){
-        ArrayList<shape> temp = this.redo.pop();
+    public ArrayList<shapeInterface> redo(){
+        ArrayList<shapeInterface> temp = this.redo.pop();
         this.undo.push(temp);
         return temp;
     }
 
-    public void editAttribute(shape newObject, int id){
+    public void editAttribute(shapeInterface newObject, int id){
         int index = getShapeIndex(id);
         this.shapes.remove(index);
         this.shapes.add(newObject);

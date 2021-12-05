@@ -1,6 +1,10 @@
 package com.example.drawingserver.RequestsControllers;
 
 
+import com.example.drawingserver.shapes.shapeFactroy;
+import com.example.drawingserver.shapes.shapeInterface;
+import com.example.drawingserver.shapes.shapeWarehouse;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,12 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/edit")
 public class editRequestsController{
 
+    shapeFactroy factory;
+    shapeWarehouse warehouse;
 
+    public editRequestsController(){
+        this.warehouse = this.warehouse.getInstanceOf();
+        this.factory = new shapeFactroy();
+    }
     // clicking on a shape from the provided shapes to create it
     // (waiting for clicking on the board to insert the object)
     @PostMapping("/create:{shape}")
     public String createShape(@PathVariable String shape){
-
+        shapeInterface s = this.factory.factorShape(shape);
+        this.warehouse.addShape(s);
         return shape + " created";
     }
 
