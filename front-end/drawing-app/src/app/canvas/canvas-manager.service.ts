@@ -42,7 +42,9 @@ export class CanvasManagerService {
   }
 
 
+
   public addShape(shape:string){
+
     this.switchSelection();
     const component = this;
   this.stage.on('click', function(){
@@ -60,6 +62,9 @@ export class CanvasManagerService {
     component.switchSelection();
   }
 });
+  }
+
+  public transformShape(){
   }
 
   public deleteShape(shape:Konva.Shape){
