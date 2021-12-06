@@ -3,13 +3,13 @@ import java.util.Stack;
 import java.util.ArrayList;
 
 public class shapeWarehouse {
-    private Stack<ArrayList<shapeInterface>> undo;
-    private Stack<ArrayList<shapeInterface>> redo;
-    private ArrayList<shapeInterface> shapes;
+    private Stack<ArrayList<shapeInterface>> undo = new Stack<ArrayList<shapeInterface>>();
+    private Stack<ArrayList<shapeInterface>> redo = new Stack<ArrayList<shapeInterface>>();
+    private ArrayList<shapeInterface> shapes = new ArrayList<shapeInterface>();
     private static shapeWarehouse instance;
     private shapeWarehouse(){}
 
-    public shapeWarehouse getInstanceOf(){
+    public static shapeWarehouse getInstanceOf(){
         if(instance == null)
         {
             instance = new shapeWarehouse(); 
@@ -21,6 +21,7 @@ public class shapeWarehouse {
     {
         this.shapes.add(s);
         this.undo.push(this.shapes);
+        this.redo.clear();
     }
 
     public void removeShape(int id)
@@ -28,14 +29,16 @@ public class shapeWarehouse {
         int index = getShapeIndex(id);
         this.shapes.remove(index);
         this.undo.push(this.shapes);
+        this.redo.clear();
     }
     
     public shapeInterface copyShape(int id) throws CloneNotSupportedException
     {
         int index = getShapeIndex(id);
-        shapeInterface s = this.shapes.get(index);
-        shapeInterface temp = s.clone();
-        return temp;
+        shapeInterface s = this.shapes.get(index).clone();
+        this.undo.push(this.shapes);
+        this.redo.clear();
+        return s;
     }
 
     public ArrayList<shapeInterface> undo(){
@@ -50,11 +53,28 @@ public class shapeWarehouse {
         return temp;
     }
 
-    public void editAttribute(shapeInterface newObject, int id){
+    public void changeColor(int id, String color)
+    {
         int index = getShapeIndex(id);
-        this.shapes.remove(index);
-        this.shapes.add(newObject);
+        this.shapes.get(index).setColor(color);
         this.undo.push(this.shapes);
+        this.redo.clear();
+    }
+
+    public void changeSize(int id, int x, int y)
+    {
+        int index = getShapeIndex(id);
+        this.shapes.get(index).setDimensions(x, y);
+        this.undo.push(this.shapes);
+        this.redo.clear();
+    }
+
+    public void changeLocation(int id, int x, int y)
+    {
+        int index = getShapeIndex(id);
+        this.shapes.get(index).setPostion(x, y);
+        this.undo.push(this.shapes);
+        this.redo.clear();
     }
 
     private int getShapeIndex(int id)
