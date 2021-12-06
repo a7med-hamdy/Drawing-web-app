@@ -10,12 +10,13 @@ import {  RequestsService  } from './requests.service';
 export class CanvasComponent implements OnInit {
   stage!: Konva.Stage;
   layer!: Konva.Layer;
+  selectedShape!: Konva.Shape;
   transformers: Konva.Transformer[] = [];
   CanvasManager!:CanvasManagerService;
   constructor() { }
 
   ngOnInit(): void {
-    this.CanvasManager = new CanvasManagerService(this.stage, this.layer);
+    this.CanvasManager = new CanvasManagerService(this.stage, this.layer, this.selectedShape);
     this.CanvasManager.refresh();
   }
 

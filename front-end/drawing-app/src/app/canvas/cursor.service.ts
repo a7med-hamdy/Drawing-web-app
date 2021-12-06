@@ -1,6 +1,6 @@
 import { Injectable, Component } from '@angular/core';
 import Konva from 'konva';
-
+import { Transformer } from 'konva/lib/shapes/Transformer';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,22 +9,23 @@ export class CursorService {
   stage!: Konva.Stage;
   layer!: Konva.Layer;
   transformer: Konva.Transformer = new Konva.Transformer({ignoreStroke:true});
-  selected: any =[];
+  selectedShape!: Konva.Shape;
+  selected: any= [];
   selectionRectangle = new Konva.Rect({
     fill: 'rgba(0,0,255,0.5)',
     visible: false,
   });
 
-  constructor(stg:Konva.Stage, lyer:Konva.Layer) {
+  constructor(stg:Konva.Stage, lyer:Konva.Layer, slctdShape:Konva.Shape) {
     this.stage = stg;
     this.layer = lyer;
+    this.selectedShape = slctdShape;
   }
 
   public CursorPositionListener(){
     const component = this;
      this.stage.on('mousemove', function(){
       component.CursorPos = (component.stage.getRelativePointerPosition());
-      //console.log(component.CursorPos);
     });
   }
 
@@ -33,6 +34,7 @@ export class CursorService {
     const component = this;
     var x1:number; var x2:number; var y1:number; var y2:number;
 
+    //selection rectangle to delete multiple shapes
     //start of the selection rectangle
     this.stage.on('mousedown touchstart', (e) => {
       // do nothing if we mousedown on any shape
@@ -86,8 +88,8 @@ export class CursorService {
       );
       component.transformer.nodes(component.selected);
     });
-
-    //selection on click
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //selection on click for transforming shapes
     this.stage.on('click tap', function (e) {
       // if we are selecting with rect, do nothing
       if (component.selectionRectangle.visible()) {
@@ -97,6 +99,7 @@ export class CursorService {
       // if click on empty area - remove all selections
       if (e.target === component.stage) {
         component.selected = [];
+        component.transformer.detach();
         return;
       }
       if(e.target instanceof Konva.Shape){
@@ -106,25 +109,39 @@ export class CursorService {
         component.selected = component.selected.filter((element:Konva.Shape, index:any) => {
           return component.selected.indexOf(element) === index;
         });
-      component.transformer.nodes(component.selected);
+        component.selectedShape = e.target;
+      component.transformer.nodes([e.target]);
       }
-      console.log(component.selected);
-
+        e.target.on('transform', function(){
+          e.target.setAttrs({
+            width:  e.target.width() * e.target.scaleX(),
+            height: e.target.height() * e.target.scaleY(),
+            scaleX: 1,
+            scaleY: 1,
+          });
+          console.log(e.target);
+      });
+      e.target.on('transformend', function(){
+        console.log(shapes);
+      })
   });
 }
+/*
+  public CursorTransformationListener(){
+    const component = this;
 
-  public CursorTransformationListener(shape:any){
-    //if(this.selected.length == 1){
-        shape.on('transform', () => {
+        this.selectedShape.on('transform', function() {
         // adjust size to scale
         // and set minimal size
-        shape.setAttrs({
-          width:Math.max(20, shape.width() * shape.scaleX()),
-          height:Math.max(5, shape.height() * shape.scaleY()),
-          scaleX:1,
-          scaleY:1,
-        })
-      });
-    //}
-  }
+        component.selectedShape.setAttrs({
+          width:  component.selectedShape.width() * component.selectedShape.scaleX(),
+          height: component.selectedShape.height() * component.selectedShape.scaleY(),
+          scaleX: 1,
+          scaleY: 1,
+        });
+
+        console.log(component.selectedShape);
+
+  });
+  }*/
 }

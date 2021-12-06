@@ -11,23 +11,26 @@ export class CanvasManagerService {
   stage!: Konva.Stage;
   layer!: Konva.Layer;
   Cursor!:CursorService;
+  selectedShape!:Konva.Shape;
 
-
-  constructor(stg:Konva.Stage, lyer:Konva.Layer) {
+  constructor(stg:Konva.Stage, lyer:Konva.Layer, slctdShape:Konva.Shape) {
     this.stage = stg;
     this.layer = lyer;
+    this.selectedShape = slctdShape;
   }
 
 
 
 
    public refresh():void{
+
     this.stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
       height: window.innerHeight
     });
-    this.Cursor = new CursorService(this.stage, this.layer);
+    this.selectedShape = new Konva.Shape();
+    this.Cursor = new CursorService(this.stage, this.layer, this.selectedShape);
     this.layer = new Konva.Layer();
     this.layer.add(this.Cursor.transformer);
     this.layer.add(this.Cursor.selectionRectangle);
@@ -55,7 +58,9 @@ export class CanvasManagerService {
       width:300,
       height:300,
       stroke:"black",
-      draggable:true
+      draggable:true,
+      scaleX:1,
+      scaleY:1
     });
     component.shapes.push(rect);
     component.layer.add(rect);
@@ -65,7 +70,8 @@ export class CanvasManagerService {
   }
 
   public transformShape(){
-  }
+
+}
 
   public deleteShape(shape:Konva.Shape){
 
