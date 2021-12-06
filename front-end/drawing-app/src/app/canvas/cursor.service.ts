@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Component } from '@angular/core';
 import Konva from 'konva';
 
 @Injectable({
@@ -8,8 +8,8 @@ export class CursorService {
   CursorPos:any;
   stage!: Konva.Stage;
   layer!: Konva.Layer;
-  transformer: Konva.Transformer = new Konva.Transformer();
-
+  transformer: Konva.Transformer = new Konva.Transformer({ignoreStroke:true});
+  selected: any =[];
   selectionRectangle = new Konva.Rect({
     fill: 'rgba(0,0,255,0.5)',
     visible: false,
@@ -24,13 +24,16 @@ export class CursorService {
     const component = this;
      this.stage.on('mousemove', function(){
       component.CursorPos = (component.stage.getRelativePointerPosition());
-      console.log(component.CursorPos);
+      //console.log(component.CursorPos);
     });
   }
+
 
   public CursorShapeSelectionListener(shapes:any){
     const component = this;
     var x1:number; var x2:number; var y1:number; var y2:number;
+
+    //start of the selection rectangle
     this.stage.on('mousedown touchstart', (e) => {
       // do nothing if we mousedown on any shape
         if (e.target !== component.stage) {
@@ -47,7 +50,8 @@ export class CursorService {
       component.selectionRectangle.height(0);
     });
 
-   this.stage.on('mousemove touchmove', (e) => {
+    //building the selection triangle
+    this.stage.on('mousemove touchmove', (e) => {
       // do nothing if we didn't start selection
       if (!component.selectionRectangle.visible()) {
         return;
@@ -64,6 +68,7 @@ export class CursorService {
       });
     });
 
+    //end of selection triangle
     this.stage.on('mouseup touchend', (e) => {
       // do nothing if we didn't start selection
       if (!component.selectionRectangle.visible()) {
@@ -76,10 +81,50 @@ export class CursorService {
       });
 
       var box = component.selectionRectangle.getClientRect();
-      var selected = shapes.filter((shape:Konva.Shape) =>
+      component.selected = shapes.filter((shape:Konva.Shape) =>
         Konva.Util.haveIntersection(box, shape.getClientRect())
       );
-      component.transformer.nodes(selected);
+      component.transformer.nodes(component.selected);
     });
+
+    //selection on click
+    this.stage.on('click tap', function (e) {
+      // if we are selecting with rect, do nothing
+      if (component.selectionRectangle.visible()) {
+        return;
+      }
+
+      // if click on empty area - remove all selections
+      if (e.target === component.stage) {
+        component.selected = [];
+        return;
+      }
+      if(e.target instanceof Konva.Shape){
+
+        component.selected.push(e.target);
+        //filter the selected shapes if multiple clicks on the same shape
+        component.selected = component.selected.filter((element:Konva.Shape, index:any) => {
+          return component.selected.indexOf(element) === index;
+        });
+      component.transformer.nodes(component.selected);
+      }
+      console.log(component.selected);
+
+  });
+}
+
+  public CursorTransformationListener(shape:any){
+    //if(this.selected.length == 1){
+        shape.on('transform', () => {
+        // adjust size to scale
+        // and set minimal size
+        shape.setAttrs({
+          width:Math.max(20, shape.width() * shape.scaleX()),
+          height:Math.max(5, shape.height() * shape.scaleY()),
+          scaleX:1,
+          scaleY:1,
+        })
+      });
+    //}
   }
 }

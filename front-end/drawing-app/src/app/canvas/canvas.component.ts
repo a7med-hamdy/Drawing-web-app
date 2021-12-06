@@ -1,8 +1,7 @@
 import Konva from 'konva';
 import { Component, OnInit } from '@angular/core';
 import { CanvasManagerService } from './canvas-manager.service';
-import { CursorService } from './cursor.service';
-
+import {  RequestsService  } from './requests.service';
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
