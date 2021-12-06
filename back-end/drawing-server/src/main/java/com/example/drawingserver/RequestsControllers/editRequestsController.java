@@ -27,11 +27,11 @@ public class editRequestsController{
     // clicking on a shape from the provided shapes to create it
     // (waiting for clicking on the board to insert the object)
     @PostMapping("/create:{shape}")
-    public String createShape(@PathVariable String shape){
+    public String[] createShape(@PathVariable String shape){
         shapeInterface s = this.factory.factorShape(shape);
         this.warehouse.addShape(s);
         System.out.println(s.toString());
-        return s.toString();
+        return s.toStrings();
     }
 
 
@@ -66,9 +66,9 @@ public class editRequestsController{
 
     // copying the shape will create an object waiting to be pasted
     @PostMapping("/{id}/copy")
-    public String copyReq(@PathVariable int id) throws CloneNotSupportedException{
+    public String[] copyReq(@PathVariable int id) throws CloneNotSupportedException{
         shapeInterface s = this.warehouse.copyShape(id);
-        return s.toString();
+        return s.toStrings();
     }
 
     // delete the shape from the shapes list
