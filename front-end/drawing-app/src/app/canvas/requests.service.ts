@@ -21,7 +21,7 @@ export class RequestsService {
   }
 
   //"/{id}/color:{color}"
-  colorRequest(object: any, id: number, color: string) {
+  colorRequest(id: number, color: string) {
     let url = `http://localhost:8080/edit/${id}/color:${color}`;
     this.http.post<any>(url, { responseType: "text", observe: "data" })
   }
