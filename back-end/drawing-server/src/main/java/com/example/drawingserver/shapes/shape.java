@@ -1,7 +1,7 @@
 package com.example.drawingserver.shapes;
 
 
-class shape implements Cloneable,shapeInterface{
+class shape implements shapeInterface{
     
     protected String type;
     protected int id;
