@@ -3,34 +3,29 @@ package com.example.drawingserver.shapes;
 public interface shapeInterface {
     
 
-    public void setPostion( int x, int y);
+    void setPostion( int x, int y);
 
-    public void setDimensions(int dimention1,int dimention2);
+    void setDimensions(int dimention1,int dimention2);
 
-    public void setDimensions(int dimention);
+    void setDimensions(int dimention);
 
-    public  void setColor(String fill);
+    void setColor(String fill);
 
-    public void setStrock(String stroke);
+    void setStrock(String stroke);
 
-    public void setstrockWidth(int strokeWidth);
+    void setstrockWidth(int strokeWidth);
     
-    public int[] getPostion();
+    int[] getPostion();
 
-    public int[] getvalues();
-    
-    public int getvalue();
+    int[] getvalues(); 
 
-    public String getStrokeColor();
+    String getStrokeColor();
 
-    public int getstrokeWidth();
+    int getstrokeWidth();
 
-    public int idgetter();
+    int getID();
 
-    public String typegetter();
+    String getType();
 
-    public shapeInterface clone() throws CloneNotSupportedException;
-    
-    public String[] toStrings();
-
+    shapeInterface clone() throws CloneNotSupportedException;
 }

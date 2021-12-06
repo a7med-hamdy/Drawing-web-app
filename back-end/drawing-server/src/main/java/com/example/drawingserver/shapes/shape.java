@@ -49,12 +49,6 @@ class shape implements Cloneable,shapeInterface{
         int[] x={this.dimension1,this.dimension2};
         return x;
     }
-
-  
-    public int getvalue() {
-        return dimension2;
-    }
-
    public String getStrokeColor(){
         return this.stroke;
    }
@@ -63,11 +57,11 @@ class shape implements Cloneable,shapeInterface{
         return this.strokeWidth;
     }
 
-    public int idgetter(){
+    public int getID(){
         return id;
     }
 
-    public String typegetter(){
+    public String getType(){
         return type;
     }
 
@@ -90,11 +84,5 @@ class shape implements Cloneable,shapeInterface{
         a.strokeWidth=this.strokeWidth;
 
         return a;
-    }
-
-
-    public String[] toStrings(){
-        String[] forRequset={type,String.valueOf(id),String.valueOf(x),String.valueOf(y),String.valueOf(dimension1),String.valueOf(dimension2),fill,stroke,String.valueOf(strokeWidth) };
-        return forRequset;
     }
 }

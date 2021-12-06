@@ -1,7 +1,33 @@
 <header>
-  <button (click) = "CanvasManager.addShape('square')" >▄</button>
+  <div class="shapes">
+  <button (click) = "CanvasManager.addShape('square')" ><span>◼</span></button>
   <button>▲</button>
+  <button>⬤</button>
+  <button>⬬</button>
+  <button>▬</button>
+  <button>┃</button>
+</div>
+
+<div class="operations">
+  <button>⧉</button>
+  <button>🗑</button>
+  <button>🖬</button>
+  <button>1st</button>
+</div>
+
+<div class="colors">
+<button style="background-color:red ;"></button>
+<button style="background-color:green ;"></button>
+<button style="background-color:blue ;"></button>
+<button style="background-color:yellow ;"></button>
+<button style="background-color:black ;"></button>
+<button style="background-color:white ;"></button>
+<button style="background-color:brown ;"></button>
+<button style="background-color:cyan ;"></button>
+<button style="background-color:purple ;"></button>
+<button style="background-color:pink ;"></button>
+</div>
 </header>
-<body>
+<section>
   <div id="container"></div>
-</body>
+</section>
