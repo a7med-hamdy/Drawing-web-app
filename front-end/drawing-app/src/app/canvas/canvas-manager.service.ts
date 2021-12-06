@@ -1,5 +1,5 @@
 import { CursorService } from './cursor.service';
-import { Injectable } from '@angular/core';
+import { Injectable, Component } from '@angular/core';
 import Konva from 'konva';
 
 @Injectable({
@@ -13,10 +13,9 @@ export class CanvasManagerService {
   Cursor!:CursorService;
   selectedShape!:Konva.Shape;
 
-  constructor(stg:Konva.Stage, lyer:Konva.Layer, slctdShape:Konva.Shape) {
+  constructor(stg:Konva.Stage, lyer:Konva.Layer) {
     this.stage = stg;
     this.layer = lyer;
-    this.selectedShape = slctdShape;
   }
 
 
@@ -30,13 +29,14 @@ export class CanvasManagerService {
       height: window.innerHeight
     });
     this.selectedShape = new Konva.Shape();
-    this.Cursor = new CursorService(this.stage, this.layer, this.selectedShape);
+    this.Cursor = new CursorService(this.stage, this.layer);
     this.layer = new Konva.Layer();
     this.layer.add(this.Cursor.transformer);
     this.layer.add(this.Cursor.selectionRectangle);
     this.stage.add(this.layer);
     this.Cursor.CursorPositionListener();
     this.Cursor.CursorShapeSelectionListener(this.shapes);
+    this.Cursor.CursorTransformationListener(this.shapes);
   }
 
 

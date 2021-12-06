@@ -8,7 +8,10 @@ export class CursorService {
   CursorPos:any;
   stage!: Konva.Stage;
   layer!: Konva.Layer;
-  transformer: Konva.Transformer = new Konva.Transformer({ignoreStroke:true});
+  transformer: Konva.Transformer = new Konva.Transformer({
+    rotateEnabled:false,
+    ignoreStroke:true
+  });
   selectedShape!: Konva.Shape;
   selected: any= [];
   selectionRectangle = new Konva.Rect({
@@ -16,10 +19,9 @@ export class CursorService {
     visible: false,
   });
 
-  constructor(stg:Konva.Stage, lyer:Konva.Layer, slctdShape:Konva.Shape) {
+  constructor(stg:Konva.Stage, lyer:Konva.Layer) {
     this.stage = stg;
     this.layer = lyer;
-    this.selectedShape = slctdShape;
   }
 
   public CursorPositionListener(){
@@ -34,7 +36,6 @@ export class CursorService {
     const component = this;
     var x1:number; var x2:number; var y1:number; var y2:number;
 
-    //selection rectangle to delete multiple shapes
     //start of the selection rectangle
     this.stage.on('mousedown touchstart', (e) => {
       // do nothing if we mousedown on any shape
@@ -88,8 +89,9 @@ export class CursorService {
       );
       component.transformer.nodes(component.selected);
     });
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //selection on click for transforming shapes
+    //selection on click
     this.stage.on('click tap', function (e) {
       // if we are selecting with rect, do nothing
       if (component.selectionRectangle.visible()) {
@@ -112,10 +114,17 @@ export class CursorService {
         component.selectedShape = e.target;
       component.transformer.nodes([e.target]);
       }
+
+  });
+}
+
+  public CursorTransformationListener(shapes:any){
+
+      this.stage.on("mouseover", function(e){
         e.target.on('transform', function(){
           e.target.setAttrs({
-            width:  e.target.width() * e.target.scaleX(),
-            height: e.target.height() * e.target.scaleY(),
+            width:  Math.max(5,e.target.width() * e.target.scaleX()),
+            height: Math.max(5,e.target.height() * e.target.scaleY()),
             scaleX: 1,
             scaleY: 1,
           });
@@ -124,24 +133,7 @@ export class CursorService {
       e.target.on('transformend', function(){
         console.log(shapes);
       })
-  });
-}
-/*
-  public CursorTransformationListener(){
-    const component = this;
+      })
 
-        this.selectedShape.on('transform', function() {
-        // adjust size to scale
-        // and set minimal size
-        component.selectedShape.setAttrs({
-          width:  component.selectedShape.width() * component.selectedShape.scaleX(),
-          height: component.selectedShape.height() * component.selectedShape.scaleY(),
-          scaleX: 1,
-          scaleY: 1,
-        });
-
-        console.log(component.selectedShape);
-
-  });
-  }*/
+  }
 }
