@@ -14,7 +14,7 @@ export class CursorService {
 
   transformer: Konva.Transformer = new Konva.Transformer({
     rotateEnabled:false,
-    ignoreStroke:true
+    //ignoreStroke:true
   });
 
 
@@ -50,7 +50,7 @@ export class CursorService {
   public CursorShapeSelectionListener(shapes:any){
     const component = this;
     //selection on click
-    this.stage.on('click', function (e) {
+    this.stage.on('click tap', function (e) {
       // if click on empty area - remove all selections
       if (e.target === component.stage) {
         //component.selected = [];
@@ -90,15 +90,16 @@ export class CursorService {
         e.target.on('transformend', function(){
           if(e.target instanceof Konva.Shape)
           e.target.setAttrs({
-            width:  Math.max(5,e.target.width() * e.target.scaleX()),
-            height: Math.max(5,e.target.height() * e.target.scaleY()),
+            width:  Math.max(5,Math.abs(e.target.width() * e.target.scaleX())),
+            height: Math.max(5,Math.abs(e.target.height() * e.target.scaleY())),
             scaleX: 1,
             scaleY: 1,
           });
           console.log(component.selectedShape);
+          return;
       });
-
-      });
+      return;
+    });
 
   }
 }
