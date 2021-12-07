@@ -24,12 +24,14 @@ export class CanvasManagerService {
     this.layer = lyer;
   }
 
-
-
-
+/*Utility Functions */
+  public addShape(shape:any){
+    this.layer.add(shape);
+    this.shapes.push(shape);
+    console.log(this.layer.getChildren());
+  }
 
    public refresh():void{
-
     this.stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
@@ -42,16 +44,15 @@ export class CanvasManagerService {
     this.Cursor.CursorPositionListener();
     this.Cursor.CursorShapeSelectionListener(this.shapes);
     this.Cursor.CursorTransformationListener();
-    //this.updateShapePosition();
-    this.updateShapeSize();
+    this.Cursor.CursorDraggerListener();
   }
+///////////////////////////////////////////////////////////////////////
+
 
   createShape(type: string){
     const component = this;
-    this.switchState();
     var x, y;
     this.stage.on('click', function(){
-      if(component.pressed){
         x = component.Cursor.CursorPos.x;
         y = component.Cursor.CursorPos.y;
         component.req.createRequest(type, Math.trunc(x), Math.trunc(y))
@@ -60,30 +61,32 @@ export class CanvasManagerService {
             console.log(`${type} is created\n` + JSON.stringify(data))
           });
           component.stage.off('click');
-
-        component.switchState();
-    }
     return type;
     });
   }
 
 
-  public switchState(){
-    this.pressed = !this.pressed;
+  public copyShape(){
+    const component = this;
+    var id = this.Cursor.selectedShape.getAttr('id');
+    var x,y;
+    this.stage.on('click', function(){
+        x = component.Cursor.CursorPos.x;
+        y = component.Cursor.CursorPos.y;
+        component.req.copyRequest(id, Math.trunc(x), Math.trunc(y))
+        .subscribe(data =>{
+            component.addShape(component.ShapeTranslator.translateToKonva(data));
+            console.log(`shape is copied\n` + JSON.stringify(data));
+        });
+        component.stage.off('click');
+    });
   }
 
 
-  public addShape(shape:any){
-    //intended logic
-    this.layer.add(shape);
-    this.shapes.push(shape);
-    console.log(this.layer.getChildren());
-  }
 
   public deleteShape(){
     if(this.Cursor.selectedShape != null){
       var id = this.Cursor.selectedShape.getAttr('id');
-      //this.requestService.deleteRequest(id);
 
       for( var i = 0; i < this.shapes.length; i++){
         if ( this.shapes[i].getAttr('id') === id) {
@@ -112,59 +115,4 @@ export class CanvasManagerService {
     }
   }
 
-  public copyShape(){
-    const component = this;
-    var id = this.Cursor.selectedShape.getAttr('id');
-    var x,y;
-    this.switchState();
-    this.stage.on('click', function(){
-      if(component.pressed){
-        x = component.Cursor.CursorPos.x;
-        y = component.Cursor.CursorPos.y;
-        component.req.copyRequest(id, Math.trunc(x), Math.trunc(y))
-        .subscribe(data =>{
-            component.addShape(component.ShapeTranslator.translateToKonva(data));
-            console.log(`shape is copied\n` + JSON.stringify(data));
-        });
-        component.stage.off('click');
-        component.switchState();
-      }
-
-    });
-  }
-
-  public updateShapeSize(){
-    const component = this;
-    if(this.Cursor.selectedShape != null){
-      var id = this.Cursor.selectedShape.getAttr('id');
-      this.stage.on("mousemove", function(e){
-        e.target.on("transformend", function(){
-
-          component.req.resizeRequest(id, e.target.width(), e.target.height())
-          .subscribe(data => {
-
-            console.log(`position changed to: (${e.target.width()},${e.target.height()})\nshape #${id}\n` + data)
-          });
-        });
-      });
-    }
-  }
-
-
-  public updateShapePosition(){
-    const component = this;
-    if(this.Cursor.selectedShape != null){
-      this.stage.on("mouseover", function(e){
-        e.target.on("transformend" ,function(){
-          console.log("HELLO");
-          var id = component.Cursor.selectedShape.getAttr('id');
-          var x =  component.Cursor.selectedShape.getAttr('x');
-          var y = component.Cursor.selectedShape.getAttr('y');
-         // component.CanvasComponent.move(id,x,y);
-        });
-      })
-
-
-    }
-  }
 }

@@ -18,8 +18,6 @@ export class CanvasComponent implements OnInit {
   ngOnInit(): void {
     this.CanvasManager = new CanvasManagerService(this.stage, this.layer, this.req);
     this.CanvasManager.refresh();
-    this.CanvasManager.updateShapeSize();
-
   }
 
   //////////////////////////create

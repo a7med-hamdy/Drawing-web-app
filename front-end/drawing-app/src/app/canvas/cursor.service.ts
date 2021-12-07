@@ -108,7 +108,7 @@ export class CursorService {
           component.req.resizeRequest(e.target.getAttr('id'), Math.trunc(e.target.width()), Math.trunc(e.target.height()))
           .subscribe(data => {
 
-            console.log(`position changed to: (${e.target.width()},${e.target.height()})\nshape #${e.target.getAttr('id')}\n` + data)
+            console.log(`size changed to: (${e.target.width()},${e.target.height()})\nshape #${e.target.getAttr('id')}\n` + data)
           });
 
           component.req.moveRequest(e.target.getAttr('id'), Math.trunc(e.target.x()), Math.trunc(e.target.y()))
@@ -122,5 +122,24 @@ export class CursorService {
       return;
     });
     return;
+  }
+
+  public CursorDraggerListener(){
+    const component = this;
+
+    this.stage.on("mousedown", function(e){
+      e.target.on('dragend', function(){
+
+        component.req.moveRequest(e.target.getAttr('id'), Math.trunc(e.target.x()), Math.trunc(e.target.y()))
+        .subscribe(data => {
+          console.log(`position changed to: (${e.target.x()},${e.target.y()})\nshape #${e.target.getAttr('id')}\n` + data)
+        })
+        component.selectedShape = e.target;
+        console.log(component.selectedShape);
+        return;
+    });
+    return;
+  });
+  return;
   }
 }
