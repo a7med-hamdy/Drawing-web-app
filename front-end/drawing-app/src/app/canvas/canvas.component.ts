@@ -21,8 +21,8 @@ export class CanvasComponent implements OnInit {
   }
 
   //////////////////////////create
-  create(type: string){
-    this.req.createRequest(type)
+  create(type: string, x: number, y: number){
+    this.req.createRequest(type, x, y)
     .subscribe(data =>
       {
       this.shape = data
@@ -50,8 +50,8 @@ export class CanvasComponent implements OnInit {
   }
 
   //////////////////////////copy
-  copy(id: number){
-    this.req.copyRequest(id)
+  copy(id: number, x: number, y: number){
+    this.req.copyRequest(id, x, y)
     .subscribe(data =>
       {
       this.shape = data
