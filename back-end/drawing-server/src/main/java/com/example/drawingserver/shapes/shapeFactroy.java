@@ -1,5 +1,8 @@
 package com.example.drawingserver.shapes;
 
+import javax.xml.bind.annotation.XmlRegistry;
+
+@XmlRegistry
 public class shapeFactroy {
     public shapeInterface factorShape(String shape){
         
