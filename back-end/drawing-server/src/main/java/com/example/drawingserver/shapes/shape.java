@@ -66,6 +66,10 @@ class shape implements Cloneable,shapeInterface{
         return type;
     }
 
+    public String getColor(){
+        return this.fill;
+    }
+
     @Override
     public shapeInterface clone() throws CloneNotSupportedException {
 

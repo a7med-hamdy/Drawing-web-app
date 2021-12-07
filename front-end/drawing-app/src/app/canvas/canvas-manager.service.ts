@@ -40,6 +40,8 @@ export class CanvasManagerService {
     this.Cursor.CursorPositionListener();
     this.Cursor.CursorShapeSelectionListener(this.shapes);
     this.Cursor.CursorTransformationListener(this.shapes);
+    this.updateShapePosition();
+    this.updateShapeSize();
   }
 
 
@@ -69,9 +71,9 @@ export class CanvasManagerService {
   this.stage.on('click', function(){
   if(component.pressed){
       var rect = new Konva.Rect({
-        name:"square",
         x:component.Cursor.CursorPos.x,
         y:component.Cursor.CursorPos.y,
+        //radius:32,
         width:300,
         height:300,
         stroke:"black",
@@ -96,16 +98,16 @@ export class CanvasManagerService {
   public deleteShape(){
     if(this.Cursor.selectedShape != null){
       var id = this.Cursor.selectedShape.getAttr('id');
+      //this.requestService.deleteRequest(id);
 
       for( var i = 0; i < this.shapes.length; i++){
         if ( this.shapes[i].getAttr('id') === id) {
-            this.shapes[i].destroy();
+            this.Cursor.selectedShape.destroy();
             this.shapes.splice(i, 1);
             break;
         }
       }
       this.Cursor.emptySelection();
-      //this.requestService.deleteRequest(id);
     }
 }
 
@@ -126,8 +128,26 @@ export class CanvasManagerService {
 
     //this.requestService.copyRequest(id);
     //var CopiedShape =  this.ShapeTranslator.translateToKonva("this.requestService.copyRequest(id);");
-    //this.layer.add(CopiedShape);
-    //this.shapes.push(CopiedShape);
+    //this.addShape(CopiedShape);
 
+  }
+
+  public updateShapeSize(){
+    if(this.Cursor.selectedShape != null){
+      var id = this.Cursor.selectedShape.getAttr('id');
+      var width =  this.Cursor.selectedShape.getAttr('width');
+      var height = this.Cursor.selectedShape.getAttr('height');
+      this.requestService.moveRequest(id,width,height);
+    }
+  }
+
+
+  public updateShapePosition(){
+    if(this.Cursor.selectedShape != null){
+      var id = this.Cursor.selectedShape.getAttr('id');
+      var x =  this.Cursor.selectedShape.getAttr('x');
+      var y = this.Cursor.selectedShape.getAttr('y');
+      this.requestService.moveRequest(id,x,y);
+    }
   }
 }

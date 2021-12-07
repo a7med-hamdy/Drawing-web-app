@@ -11,6 +11,8 @@ public interface shapeInterface {
 
     void setColor(String fill);
 
+    String getColor();
+
     void setStrock(String stroke);
 
     void setstrockWidth(int strokeWidth);
