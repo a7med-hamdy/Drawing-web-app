@@ -43,8 +43,14 @@ section{
   padding: 0;
 }
 
-.uplo{
+form{
   display: none;
+  z-index: 3;
+  position: absolute;
+  width: 400px;
+  top: 25%;
+  left: calc(50%-200px);
+  background-color: darkgrey;
 }
 
 .operations button{
@@ -84,4 +90,11 @@ section{
 a{
   text-decoration: none;
   color: black;
+}
+.uplo{
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.746);
+   z-index: 2;
 }
