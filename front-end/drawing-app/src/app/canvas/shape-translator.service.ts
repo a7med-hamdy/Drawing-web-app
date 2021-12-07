@@ -7,7 +7,7 @@ import Konva from 'konva';
 export class ShapeTranslatorService {
 
   constructor() { }
-  public translate(shape: any, text: any){
+ /* public translate(shape: any, text: any){
     if (shape instanceof Konva.Shape){
       return this.translateToShape(shape);
     }
@@ -18,11 +18,12 @@ export class ShapeTranslatorService {
         return this.translateWithText(shape, text);
       }
     }
-  }
+  }*/
 
   public translateToKonva(shape: any){
     if(shape.type == 'line'){
         return new Konva.Line({
+          name: shape.type,
           points: shape.points,
           x: shape.x,
           y: shape.y,
@@ -34,6 +35,7 @@ export class ShapeTranslatorService {
     }
     else if(shape.type == 'rectangle' || shape.type == 'square'){
         return new Konva.Rect({
+          name: shape.type,
           x:shape.x,
           y:shape.y,
           width: shape.dimension1,
@@ -46,6 +48,7 @@ export class ShapeTranslatorService {
     }
     else if(shape.type == 'ellipse'){
         return new Konva.Ellipse({
+          name: shape.type,
           x: shape.x,
           y: shape.y,
           radiusX: shape.dimension1,
@@ -58,6 +61,7 @@ export class ShapeTranslatorService {
     }
     else if(shape.type == 'circle'){
       return new Konva.Circle({
+        name: shape.type,
         x: shape.x,
         y: shape.y,
         radius: shape.dimension1,
@@ -69,6 +73,7 @@ export class ShapeTranslatorService {
     }
     else if(shape.type == 'triangle'){
       return new Konva.RegularPolygon({
+        name: shape.type,
         x: shape.x,
         y: shape.y,
         sides: shape.dimension1,
@@ -81,6 +86,7 @@ export class ShapeTranslatorService {
     }
     else if(shape.type == 'text'){
       return new Konva.Text({
+        name: shape.type,
         x: shape.x,
         y: shape.y,
         text:shape.text,
@@ -110,7 +116,7 @@ export class ShapeTranslatorService {
     shapeWithText.add(KonvaText);
     return shapeWithText;
   }
-
+/*
   public translateToShape(KonvaShape: any){
     if(KonvaShape instanceof Konva.Line){
 
@@ -127,5 +133,5 @@ export class ShapeTranslatorService {
     else if(KonvaShape instanceof Konva.Text){
 
     }
-  }
+  }*/
 }

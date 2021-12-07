@@ -10,22 +10,22 @@
 
 <div class="operations">
   <button>⧉</button>
-  <button>🗑</button>
+  <button (click) = "CanvasManager.deleteShape()" >🗑</button>
   <button>🖬</button>
   <button>1st</button>
 </div>
 
 <div class="colors">
-<button style="background-color:red ;"></button>
-<button style="background-color:green ;"></button>
-<button style="background-color:blue ;"></button>
-<button style="background-color:yellow ;"></button>
-<button style="background-color:black ;"></button>
-<button style="background-color:white ;"></button>
-<button style="background-color:brown ;"></button>
-<button style="background-color:cyan ;"></button>
-<button style="background-color:purple ;"></button>
-<button style="background-color:pink ;"></button>
+<button (click) ="CanvasManager.colorShape('red')" style="background-color:red ;"></button>
+<button (click) ="CanvasManager.colorShape('green')" style="background-color:green ;"></button>
+<button (click) ="CanvasManager.colorShape('blue')" style="background-color:blue ;"></button>
+<button (click) ="CanvasManager.colorShape('yellow')" style="background-color:yellow ;"></button>
+<button (click) ="CanvasManager.colorShape('black')" style="background-color:black ;"></button>
+<button (click) ="CanvasManager.colorShape('white')" style="background-color:white ;"></button>
+<button (click) ="CanvasManager.colorShape('brown')" style="background-color:brown ;"></button>
+<button (click) ="CanvasManager.colorShape('cyan')" style="background-color:cyan ;"></button>
+<button (click) ="CanvasManager.colorShape('purple')" style="background-color:purple ;"></button>
+<button (click) ="CanvasManager.colorShape('pink')" style="background-color:pink ;"></button>
 </div>
 </header>
 <section>

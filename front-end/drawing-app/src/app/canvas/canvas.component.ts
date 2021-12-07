@@ -10,7 +10,6 @@ import {  RequestsService  } from './requests.service';
 export class CanvasComponent implements OnInit {
   stage!: Konva.Stage;
   layer!: Konva.Layer;
-  transformers: Konva.Transformer[] = [];
   CanvasManager!:CanvasManagerService;
   constructor() { }
 
