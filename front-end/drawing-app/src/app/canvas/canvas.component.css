@@ -1,17 +1,19 @@
 header{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0;
   position: sticky;
   top: 0;
+  align-items: center;
   padding: 10px 25px;
   height: fit-content;
   background-color:#b0cdd3b6;
+  z-index: 1;
 }
 
 .shapes{
   display: flex;
-  width: 416px;
+  width: 150px;
   flex-wrap: wrap;
   padding: 0;
 }
@@ -20,31 +22,66 @@ header{
   display: flex;
   flex-wrap: wrap;
   padding: 0;
+  width: 105px;
 }
 
 .colors{
   display: flex;
   flex-wrap: wrap;
   padding: 0;
+  height: fit-content;
+  width:220px;
+  border: solid;
+  border-width: 5px;
+  border-color: black;
+  background-color: azure;
 }
 
 section{
+  z-index: 0;
   margin: 0;
   padding: 0;
 }
 
-button{
-  font-size: 20px;
-  width:120px;
-  margin: 2px 8px;
-  padding: 0;
-  background-color:brown ;
-  display: inline-block;
-  border: 0;
-  color: black;
-  transition: 0.5s;
+.uplo{
+  display: none;
 }
 
-button:hover{
+.operations button{
+  font-size: 20px;
+  padding: 5px;
+}
+.colors button{
+  width: 40px;
+  height: 40px;
+  margin:2px;
+  border-width: 2px;
+  border-color: black;
+}
+.colors button:hover{
+  border: solid;
+}
+.shapes button{
+  width: 45px;
+  height: 45px;
+  margin: 2px;
+  font-size: 27.5px;
+  background-color: red;
+}
+.shapes button:hover{
   background-color: green;
+}
+.operations button{
+  width: 45px;
+  height: 45px;
+  margin: 2px;
+  font-size: 27.5px;
+  background-color: burlywood;
+}
+.operations button:hover{
+  background-color: blueviolet;
+}
+a{
+  text-decoration: none;
+  color: black;
 }

@@ -5,9 +5,9 @@ public interface shapeInterface {
 
     void setPostion( int x, int y);
 
-    void setDimensions(int dimention1,int dimention2);
+    void setDimensions(int dimension1,int dimension2);
 
-    void setDimensions(int dimention);
+    void setDimensions(int dimension);
 
     void setColor(String fill);
 

@@ -1,6 +1,7 @@
 package com.example.drawingserver.RequestsControllers;
 
 
+import java.util.ArrayList;
 import java.util.EmptyStackException;
 
 import com.example.drawingserver.shapes.shapeFactroy;
@@ -22,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/edit")
 public class editRequestsController{
 
-    shapeFactroy factory;
-    shapeWarehouse warehouse;
-    ObjectMapper map;
+    private shapeFactroy factory;
+    private shapeWarehouse warehouse;
+    private ObjectMapper map;
 
     public editRequestsController(){
         this.warehouse = shapeWarehouse.getInstanceOf();
@@ -110,27 +111,51 @@ public class editRequestsController{
     }
 
     @PostMapping("/undo")
-    public String undoReq()
+    public String undoReq() 
     {
+        String json;
+        ArrayList<shapeInterface> list;
         try{
-            this.warehouse.undo();
+            list =  this.warehouse.undo();
+            json = jsonList(list);
         }
-        catch(EmptyStackException e){
+        catch(EmptyStackException | JsonProcessingException e){
             return "fail";
         }
-        return "success";
+        return json;
     }
 
     @PostMapping("/redo")
     public String redoReq()
     {
+        String json;
+        ArrayList<shapeInterface> list;
         try{
-            this.warehouse.redo();
+            list =  this.warehouse.redo();
+            json = jsonList(list);
         }
-        catch(EmptyStackException e){
+        catch(EmptyStackException | JsonProcessingException e){
             return "fail";
         }
-        return "success";
+        return json;
+    }
+
+    private String jsonList(ArrayList<shapeInterface> list) throws JsonProcessingException
+    {
+        String json = "{";
+        for(shapeInterface shape : list)
+        {
+            String s = map.writeValueAsString(shape);
+            json = json + s + ", ";
+        }
+        try{
+            json = json.substring(0, json.length()-2) + "}";
+        }
+        catch(StringIndexOutOfBoundsException e)
+        {
+            return "{}";
+        }
+        return json;
     }
 
 }
