@@ -16,7 +16,7 @@ export class CanvasComponent implements OnInit {
   shape!: Shape;
 
   ngOnInit(): void {
-    this.CanvasManager = new CanvasManagerService(this.stage, this.layer);
+    this.CanvasManager = new CanvasManagerService(this.stage, this.layer, this.req);
     this.CanvasManager.refresh();
   }
 

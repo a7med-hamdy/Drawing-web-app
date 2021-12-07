@@ -34,5 +34,5 @@ export class Shape {
       this.strokeColor = strokeColor;
       this.values = values;
     }
-    
+
 }

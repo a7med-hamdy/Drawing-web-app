@@ -42,7 +42,7 @@ export class CursorService {
   public CursorPositionListener(){
     const component = this;
      this.stage.on('mousemove', function(){
-      component.CursorPos = (component.stage.getRelativePointerPosition());
+      component.CursorPos = component.stage.getPointerPosition();
     });
   }
 
@@ -50,7 +50,7 @@ export class CursorService {
   public CursorShapeSelectionListener(shapes:any){
     const component = this;
     //selection on click
-    this.stage.on('click tap', function (e) {
+    this.stage.on('dblclick', function (e) {
       // if click on empty area - remove all selections
       if (e.target === component.stage) {
         //component.selected = [];
@@ -86,7 +86,7 @@ export class CursorService {
 
   public CursorTransformationListener(){
       const component = this;
-      this.stage.on("mouseover", function(e){
+      this.stage.on("mousemove", function(e){
         e.target.on('transformend', function(){
 
           e.target.setAttrs({

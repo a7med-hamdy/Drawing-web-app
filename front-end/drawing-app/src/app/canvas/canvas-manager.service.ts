@@ -1,8 +1,10 @@
+import { RequestsService } from './requests.service';
 import { CanvasComponent } from './canvas.component';
 import { ShapeTranslatorService } from './shape-translator.service';
 import { CursorService } from './cursor.service';
 import { Injectable, Component } from '@angular/core';
 import Konva from 'konva';
+import { Shape } from '../Shape';
 
 
 @Injectable({
@@ -15,12 +17,13 @@ export class CanvasManagerService {
   layer!: Konva.Layer;
   Cursor!:CursorService;
   ShapeTranslator:ShapeTranslatorService = new ShapeTranslatorService();
-  CanvasComponent!: CanvasComponent;
+  shape!: any;
 
-  constructor(stg:Konva.Stage, lyer:Konva.Layer) {
+  constructor(stg:Konva.Stage, lyer:Konva.Layer, public req:RequestsService) {
     this.stage = stg;
     this.layer = lyer;
   }
+
 
 
 
@@ -30,7 +33,7 @@ export class CanvasManagerService {
     this.stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
     });
     this.Cursor = new CursorService(this.stage);
     this.layer = new Konva.Layer();
@@ -39,59 +42,48 @@ export class CanvasManagerService {
     this.Cursor.CursorPositionListener();
     this.Cursor.CursorShapeSelectionListener(this.shapes);
     this.Cursor.CursorTransformationListener();
-    this.updateShapePosition();
-    this.updateShapeSize();
+    //this.updateShapePosition();
+    //this.updateShapeSize();
+  }
+
+  createShape(type: string){
+    const component = this;
+    this.switchState();
+    var x, y;
+    this.stage.on('click', function(){
+      console.log(type);
+      if(component.pressed){
+        x = component.Cursor.CursorPos.x;
+        y = component.Cursor.CursorPos.y;
+      console.log(type);
+        component.req.createRequest(type, Math.trunc(x), Math.trunc(y))
+        .subscribe(data =>{
+            component.addShape(component.ShapeTranslator.translateToKonva(data));
+            console.log(`${type} is created\n` + JSON.stringify(data))
+          });
+          component.stage.off('click');
+
+        component.switchState();
+    }
+    return type;
+    });
+
+    console.log(type);
   }
 
 
   public switchState(){
+    //this.stage.listening(false);
     this.pressed = !this.pressed;
   }
 
-  public createShape(shape:string){
-    const component = this;
-    var x,y;
-    this.switchState();
-    this.stage.on('click', function(){
-      if(component.pressed){
-        x = component.Cursor.CursorPos.x;
-        y = component.Cursor.CursorPos.y;
-        component.switchState();
-      }
-    });
-    //var createdShape = this.ShapeTranslator.translateToKonva(this.requestService.createRequest(shape,x,y));
-    //this.addShape(createdShape);
-  }
 
   public addShape(shape:any){
 
-    this.switchState();
-    const component = this;
-  this.stage.on('click', function(){
-  if(component.pressed){
-      var rect = new Konva.Rect({
-        x:component.Cursor.CursorPos.x,
-        y:component.Cursor.CursorPos.y,
-        //radius:32,
-        width:300,
-        height:300,
-        stroke:"black",
-        fill:"black",
-        draggable:true,
-        scaleX:1,
-        scaleY:1
-      });
-      component.shapes.push(rect);
-      component.layer.add(rect);
-      component.switchState();
-      return;
-    }
-  });
-  /*
-  //intended logic
-  this.layer.add(shape);
-  this.shapes.push(shape);
-  */
+    //intended logic
+    this.layer.add(shape);
+    this.shapes.push(shape);
+    console.log(this.layer.getChildren());
   }
 
   public deleteShape(){
@@ -125,7 +117,9 @@ export class CanvasManagerService {
 
   public copyShape(){
     var id = this.Cursor.selectedShape.getAttr('id');
-    this.CanvasComponent.copy(id);
+    var x = this.Cursor.selectedShape.getAttr('x');
+    var y = this.Cursor.selectedShape.getAttr('y');
+   // this.CanvasComponent.copy(id,x,y);
     //this.requestService.copyRequest(id);
     //var CopiedShape =  this.ShapeTranslator.translateToKonva("this.requestService.copyRequest(id);");
     //this.addShape(CopiedShape);
@@ -137,7 +131,7 @@ export class CanvasManagerService {
       var id = this.Cursor.selectedShape.getAttr('id');
       var width =  this.Cursor.selectedShape.getAttr('width');
       var height = this.Cursor.selectedShape.getAttr('height');
-      this.CanvasComponent.resize(id,width,height);
+      //this.CanvasComponent.resize(id,width,height);
     }
   }
 
@@ -151,7 +145,7 @@ export class CanvasManagerService {
           var id = component.Cursor.selectedShape.getAttr('id');
           var x =  component.Cursor.selectedShape.getAttr('x');
           var y = component.Cursor.selectedShape.getAttr('y');
-          component.CanvasComponent.move(id,x,y);
+         // component.CanvasComponent.move(id,x,y);
         });
       })
 

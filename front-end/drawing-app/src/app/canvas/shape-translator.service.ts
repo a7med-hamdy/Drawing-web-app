@@ -1,101 +1,79 @@
+import { Shape } from './../Shape';
 import { Injectable } from '@angular/core';
 import Konva from 'konva';
-
 @Injectable({
   providedIn: 'root'
 })
 export class ShapeTranslatorService {
 
   constructor() { }
- /* public translate(shape: any, text: any){
-    if (shape instanceof Konva.Shape){
-      return this.translateToShape(shape);
-    }
-    else{
-      if(text == null)
-        return this.translateToKonva(shape);
-      else{
-        return this.translateWithText(shape, text);
-      }
-    }
-  }*/
 
   public translateToKonva(shape: any){
     if(shape.type == 'line'){
         return new Konva.Line({
           name: shape.type,
-          points: shape.points,
-          x: shape.x,
-          y: shape.y,
-          fill:shape.fill,
-          stroke:shape.stroke,
+          //points: shape.points,
+          x: shape.postion[0],
+          y: shape.postion[1],
+          fill:shape.color,
+          stroke:shape.strokeColor,
           strokeWidth:shape.strokeWidth,
-          id: shape.id,
+          id: shape.id.toString(),
         })
     }
-    else if(shape.type == 'rectangle' || shape.type == 'square'){
+    else if(shape.type == 'rectangle' || shape.type == "square"){
         return new Konva.Rect({
+          draggable:true,
           name: shape.type,
-          x:shape.x,
-          y:shape.y,
-          width: shape.dimension1,
-          height: shape.dimension2,
-          fill:shape.fill,
-          stroke:shape.stroke,
+          x: shape.postion[0],
+          y: shape.postion[1],
+          width: shape.values[0],
+          height: shape.values[1],
+          fill:shape.color,
+          stroke:shape.strokeColor,
           strokeWidth:shape.strokeWidth,
-          id: shape.id,
+          id: shape.id.toString(),
         })
     }
     else if(shape.type == 'ellipse'){
         return new Konva.Ellipse({
+          draggable:true,
           name: shape.type,
-          x: shape.x,
-          y: shape.y,
-          radiusX: shape.dimension1,
-          radiusY: shape.dimension2,
-          fill:shape.fill,
-          stroke:shape.stroke,
+          x: shape.postion[0],
+          y: shape.postion[1],
+          radiusX: shape.values[0],
+          radiusY: shape.values[1],
+          fill:shape.color,
+          stroke:shape.strokeColor,
           strokeWidth:shape.strokeWidth,
-          id: shape.id,
+          id: shape.id.toString(),
         })
     }
     else if(shape.type == 'circle'){
       return new Konva.Circle({
+        draggable:true,
         name: shape.type,
-        x: shape.x,
-        y: shape.y,
-        radius: shape.dimension1,
-        fill:shape.fill,
-        stroke:shape.stroke,
+        x: shape.postion[0],
+        y: shape.postion[1],
+        radius: shape.values[0],
+        fill:shape.color,
+        stroke:shape.strokeColor,
         strokeWidth:shape.strokeWidth,
-        id: shape.id,
+        id: shape.id.toString(),
       })
     }
     else if(shape.type == 'triangle'){
       return new Konva.RegularPolygon({
+        draggable:true,
         name: shape.type,
-        x: shape.x,
-        y: shape.y,
-        sides: shape.dimension1,
-        radius: shape.dimension2,
-        fill:shape.fill,
-        stroke:shape.stroke,
+        x: shape.postion[0],
+        y: shape.postion[1],
+        sides: 3,
+        radius: shape.values[0],
+        fill:shape.color,
+        stroke:shape.strokeColor,
         strokeWidth:shape.strokeWidth,
-        id: shape.id,
-      })
-    }
-    else if(shape.type == 'text'){
-      return new Konva.Text({
-        name: shape.type,
-        x: shape.x,
-        y: shape.y,
-        text:shape.text,
-        width: shape.dimension1,
-        fill:shape.fill,
-        stroke:shape.stroke,
-        strokeWidth:shape.strokeWidth,
-        id: shape.id,
-
+        id: shape.id.toString(),
       })
     }
 
@@ -116,22 +94,4 @@ export class ShapeTranslatorService {
     shapeWithText.add(KonvaText);
     return shapeWithText;
   }
-/*
-  public translateToShape(KonvaShape: any){
-    if(KonvaShape instanceof Konva.Line){
-
-    }
-    else if(KonvaShape instanceof Konva.Rect){
-
-    }
-    else if(KonvaShape instanceof Konva.Ellipse){
-
-    }
-    else if(KonvaShape instanceof Konva.Circle){
-
-    }
-    else if(KonvaShape instanceof Konva.Text){
-
-    }
-  }*/
 }
