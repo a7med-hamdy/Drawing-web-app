@@ -34,9 +34,10 @@ public class editRequestsController{
     }
     // clicking on a shape from the provided shapes to create it
     // (waiting for clicking on the board to insert the object)
-    @PostMapping("/create:{shape}")
-    public String createShape(@PathVariable String shape) throws JsonProcessingException{
+    @PostMapping("/create:{shape}:{x},{y}")
+    public String createShape(@PathVariable String shape, @PathVariable int x, @PathVariable int y) throws JsonProcessingException{
         shapeInterface s = this.factory.factorShape(shape);
+        s.setPostion(x, y);
         this.warehouse.addShape(s);
         System.out.println(map.writeValueAsString(s));
         return map.writeValueAsString(s);
@@ -91,10 +92,11 @@ public class editRequestsController{
     }
 
     // copying the shape will create an object waiting to be pasted
-    @PostMapping("/{id}/copy")
-    public String copyReq(@PathVariable int id) throws CloneNotSupportedException, JsonProcessingException{
+    @PostMapping("/{id}/copy:{x},{y}")
+    public String copyReq(@PathVariable int id, @PathVariable int x, @PathVariable int y) throws CloneNotSupportedException, JsonProcessingException{
         System.out.println(id + "\tcopy");
         shapeInterface s = this.warehouse.copyShape(id);
+        s.setPostion(x, y);
         return map.writeValueAsString(s);
     }
 

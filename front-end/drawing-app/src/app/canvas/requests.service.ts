@@ -16,8 +16,8 @@ export class RequestsService {
 
   //"/create:{shape}"
   //return JSON object
-  createRequest(type: string): Observable<Shape> {
-    let url = `http://localhost:8080/edit/create:${type}`;
+  createRequest(type: string, x: number, y: number): Observable<Shape> {
+    let url = `http://localhost:8080/edit/create:${type}:${x},${y}`;
     console.log("createRequest!!")
     return this.http.post<Shape>(url, { 'content-type': 'application/json'} )
     .pipe(
@@ -58,9 +58,9 @@ export class RequestsService {
 
   //"/{id}/copy"
   //return shape as JSON object
-  copyRequest(id: number): Observable<Shape> {
+  copyRequest(id: number, x: number, y: number): Observable<Shape> {
     console.log("copyRequest!!");
-    let url = `http://localhost:8080/edit/${id}/copy`;
+    let url = `http://localhost:8080/edit/${id}/copy:${x},${y}`;
     return this.http.post<Shape>(url, { 'content-type': 'application/json'})
     /* .pipe( catchError((err) => { console.error(err); throw err; }) );  */
   }
