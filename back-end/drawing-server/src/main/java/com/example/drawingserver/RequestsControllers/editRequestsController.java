@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +38,11 @@ public class editRequestsController{
     public String createShape(@PathVariable String shape, @PathVariable int x, @PathVariable int y) throws JsonProcessingException{
         shapeInterface s = this.factory.factorShape(shape);
         s.setPostion(x, y);
-        this.warehouse.addShape(s);
+        try {
+            this.warehouse.addShape(s);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         System.out.println(map.writeValueAsString(s));
         return map.writeValueAsString(s);
     }
@@ -60,7 +63,7 @@ public class editRequestsController{
         try{
             this.warehouse.changeColor(id, color);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             System.out.println(id + "\tfail " + color);
             return "fail";
         }
@@ -74,7 +77,7 @@ public class editRequestsController{
         try{
             this.warehouse.changeSize(id, v1, v2);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             return "fail";
         }
         return "success";
@@ -86,7 +89,7 @@ public class editRequestsController{
         try{
             this.warehouse.changeLocation(id, x, y);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             return "fail";
         }
         return "success";
@@ -107,7 +110,7 @@ public class editRequestsController{
         try{
             this.warehouse.removeShape(id);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             return "fail";
         }
         return "success";

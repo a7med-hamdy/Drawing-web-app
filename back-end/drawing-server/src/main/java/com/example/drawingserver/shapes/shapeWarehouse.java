@@ -34,14 +34,14 @@ public class shapeWarehouse {
         return this.shapes;
     }
 
-    public void addShape(shapeInterface s)
+    public void addShape(shapeInterface s) throws CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
         this.shapes.add(s);
     }
 
-    public void removeShape(int id)throws ArrayIndexOutOfBoundsException
+    public void removeShape(int id)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
@@ -73,7 +73,7 @@ public class shapeWarehouse {
         return this.shapes;
     }
 
-    public void changeColor(int id, String color)throws ArrayIndexOutOfBoundsException
+    public void changeColor(int id, String color)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
@@ -81,7 +81,7 @@ public class shapeWarehouse {
         this.shapes.get(index).setColor(color);
     }
 
-    public void changeSize(int id, int x, int y)throws ArrayIndexOutOfBoundsException
+    public void changeSize(int id, int x, int y)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
@@ -89,7 +89,7 @@ public class shapeWarehouse {
         this.shapes.get(index).setDimensions(x, y);
     }
 
-    public void changeLocation(int id, int x, int y)throws ArrayIndexOutOfBoundsException
+    public void changeLocation(int id, int x, int y)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
@@ -110,12 +110,12 @@ public class shapeWarehouse {
         return i;
     }
 
-    private ArrayList<shapeInterface> cloneArrayList(ArrayList<shapeInterface> list)
+    private ArrayList<shapeInterface> cloneArrayList(ArrayList<shapeInterface> list) throws CloneNotSupportedException
     {
         ArrayList<shapeInterface> temp = new ArrayList<>();
         for(shapeInterface s : list)
         {
-            temp.add(s);
+            temp.add(s.clone());
         }
         return temp;
     }
