@@ -2,7 +2,13 @@ package com.example.drawingserver.RequestsControllers;
 
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringWriter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import java.util.ArrayList;
 
 import javax.xml.transform.OutputKeys;
@@ -20,11 +26,14 @@ import com.example.drawingserver.shapes.shapeWarehouse;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,8 +47,9 @@ public class fileRequestsController {
         this.warehouse = shapeWarehouse.getInstanceOf();
         this.gson = new Gson();
     }
-    @PostMapping("/save")
-    public String saveReq(@RequestBody String type) throws TransformerFactoryConfigurationError, TransformerException{
+    @GetMapping("/save")
+    @ResponseBody
+    public ResponseEntity<Object> saveReq() throws TransformerFactoryConfigurationError, TransformerException, IOException{
         
         String xmlString = "";
         String element = gson.toJson(this.warehouse.getList(),new TypeToken<ArrayList<shapeInterface>>() {}.getType()); 
@@ -60,7 +70,19 @@ public class fileRequestsController {
  
         transformer.transform(new StringSource(xmlString), streamResult);
         xmlString = stringWriter.toString();
-        return xmlString;
+        File file = new File("try.xml");
+        FileWriter myWriter = new FileWriter("try.xml");
+        myWriter.write(xmlString);
+        myWriter.close();
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        return ResponseEntity.ok()
+                // Content-Disposition
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+                // Content-Type
+                .contentType(MediaType.parseMediaType("application/xml"))
+                // Contet-Length
+                .contentLength(file.length()) //
+                .body(resource);
     }
     
     @GetMapping("/load")
