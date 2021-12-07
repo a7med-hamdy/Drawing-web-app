@@ -26,7 +26,7 @@ export class CanvasComponent implements OnInit {
     .subscribe(data =>
       {
       this.shape = data
-      console.log(`${type} is created\n` + JSON.stringify(this.shape)) 
+      console.log(`${type} is created\n` + JSON.stringify(this.shape))
       });
   }
 
@@ -64,5 +64,4 @@ export class CanvasComponent implements OnInit {
     this.req.deleteRequest(id)
     .subscribe(data => { console.log(`shape deleted #${id}\n` + data) });
   }
-
 }

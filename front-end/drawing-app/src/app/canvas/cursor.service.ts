@@ -84,22 +84,23 @@ export class CursorService {
   });
 }
 
-  public CursorTransformationListener(shapes:any){
+  public CursorTransformationListener(){
       const component = this;
       this.stage.on("mouseover", function(e){
         e.target.on('transformend', function(){
-          if(e.target instanceof Konva.Shape)
+
           e.target.setAttrs({
             width:  Math.max(5,Math.abs(e.target.width() * e.target.scaleX())),
             height: Math.max(5,Math.abs(e.target.height() * e.target.scaleY())),
             scaleX: 1,
             scaleY: 1,
           });
+          component.selectedShape = e.target;
           console.log(component.selectedShape);
           return;
       });
       return;
     });
-
+    return;
   }
 }
