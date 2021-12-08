@@ -13,8 +13,6 @@ export class ShapeTranslatorService {
         return new Konva.Line({
           name: shape.type,
           points: [shape.postion[0],shape.postion[1],shape.values[0], shape.values[1]],
-         /* x: shape.postion[0],
-          y: shape.postion[1],*/
           fill:shape.color,
           stroke:shape.strokeColor,
           strokeWidth:shape.strokeWidth,
@@ -78,20 +76,5 @@ export class ShapeTranslatorService {
     }
 
     return new Konva.Shape({});
-  }
-
-  private translateWithText(shape:any, text:any){
-    var shapeWithText = new Konva.Group({
-      x:shape.x,
-      y:shape.y,
-      width:shape.width,
-      height:shape.height,
-    });
-
-    var KonvaShape = this.translateToKonva(shape);
-    var KonvaText = this.translateToKonva(text);
-    shapeWithText.add(KonvaShape);
-    shapeWithText.add(KonvaText);
-    return shapeWithText;
   }
 }

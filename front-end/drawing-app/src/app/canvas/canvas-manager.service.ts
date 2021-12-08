@@ -1,10 +1,8 @@
 import { RequestsService } from './requests.service';
-import { CanvasComponent } from './canvas.component';
 import { ShapeTranslatorService } from './shape-translator.service';
 import { CursorService } from './cursor.service';
 import { Injectable, Component } from '@angular/core';
 import Konva from 'konva';
-import { Shape } from '../Shape';
 
 
 @Injectable({
@@ -98,7 +96,6 @@ export class CanvasManagerService {
       this.req.deleteRequest(id)
       .subscribe(data => {
         this.Cursor.emptySelection();
-
          console.log(`shape deleted #${id}\n` + data)
          });
 
@@ -120,20 +117,55 @@ export class CanvasManagerService {
 
 
   public undo(){
-   /* this.req.undoRequest()
-    .subscribe(data =>
-      {
-        //console.log(data);
-      });
-      */
+    this.req.undoRequest()
+    .subscribe(data =>{
+        if(data.length == this.shapes.length){
+
+          for(var i = 0; i < data.length; i++){
+              var oldshape = this.shapes.pop();
+              oldshape.destroy();
+              var newShape = this.ShapeTranslator.translateToKonva(data[i]);
+              this.addShape(newShape);
+          }
+        }
+        if(data.length < this.shapes.length){
+          var deletedShape = this.shapes.pop();
+          deletedShape.destroy();
+        }
+        if(data.length > this.shapes.length){
+          var addedShape = this.ShapeTranslator.translateToKonva(data[data.length-1]);
+          this.addShape(addedShape);
+        }
+          console.log("return: \n"+data);
+          console.log(`UNDO action:\n` + JSON.stringify(data))
+
+
+    });
   }
 
 
   public redo(){
-   /* this.req.redoRequest()
-    .subscribe(data =>{
-      //console.log(data);
-    });
-    */
+    this.req.redoRequest()
+     .subscribe(data =>
+      {
+        if(data.length == this.shapes.length){
+          for(var i = 0; i < data.length; i++){
+              var oldshape = this.shapes.pop();
+              oldshape.destroy();
+              var newShape = this.ShapeTranslator.translateToKonva(data[i]);
+              this.addShape(newShape);
+          }
+        }
+        if(data.length < this.shapes.length){
+          var deletedShape = this.shapes.pop();
+          deletedShape.destroy();
+        }
+        if(data.length > this.shapes.length){
+          var addedShape = this.ShapeTranslator.translateToKonva(data[data.length-1]);
+          this.addShape(addedShape);
+        }
+        console.log(`REDO action:\n` + JSON.stringify(data))
+      });
+
   }
 }
