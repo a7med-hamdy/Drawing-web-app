@@ -13,7 +13,8 @@ export class CanvasComponent implements OnInit {
   layer!: Konva.Layer;
   CanvasManager!:CanvasManagerService;
   constructor(public req: RequestsService) { }
-  shape!: Shape;
+  shape!: any;
+  shapes!: Shape[]; 
 
   ngOnInit(): void {
     this.CanvasManager = new CanvasManagerService(this.stage, this.layer, this.req);
@@ -63,5 +64,26 @@ export class CanvasComponent implements OnInit {
   delete(id: number){
     this.req.deleteRequest(id)
     .subscribe(data => { console.log(`shape deleted #${id}\n` + data) });
+  }
+
+  //////////////////////////undo
+  undo(){
+    this.req.undoRequest()
+    .subscribe(data =>
+      {
+        console.log("return: \n"+data);
+        this.shapes = data;
+        console.log(`UNDO action:\n` + JSON.stringify(this.shapes))
+      });
+  }
+
+  //////////////////////////redo
+  redo(){
+    this.req.redoRequest()
+    .subscribe(data =>
+      {
+        this.shapes = data;
+        console.log(`REDO action:\n` + JSON.stringify(this.shapes))
+      });
   }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE shapes SYSTEM "">
+<shapes>
+    <shape>
+        <strokeWidth>4</strokeWidth>
+        <x>220</x>
+        <y>94</y>
+        <dimension1>70</dimension1>
+        <id>996367331</id>
+        <type>square</type>
+        <fill>blue</fill>
+        <stroke>black</stroke>
+        <dimension2>70</dimension2>
+    </shape>
+    <shape>
+        <strokeWidth>4</strokeWidth>
+        <x>130</x>
+        <y>42</y>
+        <dimension1>80</dimension1>
+        <id>276345093</id>
+        <type>triangle</type>
+        <fill>blue</fill>
+        <stroke>black</stroke>
+        <dimension2>80</dimension2>
+    </shape>
+     
+</shapes>
