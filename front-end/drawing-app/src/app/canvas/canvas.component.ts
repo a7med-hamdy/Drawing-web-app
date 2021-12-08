@@ -14,76 +14,11 @@ export class CanvasComponent implements OnInit {
   CanvasManager!:CanvasManagerService;
   constructor(public req: RequestsService) { }
   shape!: any;
-  shapes!: Shape[]; 
+  shapes!: Shape[];
 
   ngOnInit(): void {
     this.CanvasManager = new CanvasManagerService(this.stage, this.layer, this.req);
     this.CanvasManager.refresh();
   }
 
-  //////////////////////////create
-  create(type: string, x: number, y: number){
-    this.req.createRequest(type, x, y)
-    .subscribe(data =>
-      {
-      this.shape = data
-      console.log(`${type} is created\n` + JSON.stringify(this.shape))
-      });
-  }
-
-  //////////////////////////color
-  color(id: number, color: string){
-    this.req.colorRequest(id, color)
-    .subscribe(data => { console.log(`color changed to: ${color}\nshape #${id}\n` + data) });
-  }
-
-
-  //////////////////////////resize
-  resize(id: number, v1: number, v2: number){
-    this.req.resizeRequest(id, v1, v2)
-    .subscribe(data => { console.log(`size changed to: [${v1},${v2}]\nshape #${id}\n` + data) });
-  }
-
-  //////////////////////////move
-  move(id: number, x: number, y: number){
-    this.req.resizeRequest(id, x, y)
-    .subscribe(data => { console.log(`position changed to: (${x},${y})\nshape #${id}\n` + data) });
-  }
-
-  //////////////////////////copy
-  copy(id: number, x: number, y: number){
-    this.req.copyRequest(id, x, y)
-    .subscribe(data =>
-      {
-      this.shape = data
-      console.log(`shape is copied\n` + JSON.stringify(this.shape))
-    });
-  }
-
-  //////////////////////////delete
-  delete(id: number){
-    this.req.deleteRequest(id)
-    .subscribe(data => { console.log(`shape deleted #${id}\n` + data) });
-  }
-
-  //////////////////////////undo
-  undo(){
-    this.req.undoRequest()
-    .subscribe(data =>
-      {
-        console.log("return: \n"+data);
-        this.shapes = data;
-        console.log(`UNDO action:\n` + JSON.stringify(this.shapes))
-      });
-  }
-
-  //////////////////////////redo
-  redo(){
-    this.req.redoRequest()
-    .subscribe(data =>
-      {
-        this.shapes = data;
-        console.log(`REDO action:\n` + JSON.stringify(this.shapes))
-      });
-  }
 }
