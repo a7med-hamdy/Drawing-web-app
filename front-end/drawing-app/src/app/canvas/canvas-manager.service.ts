@@ -42,7 +42,7 @@ export class CanvasManagerService {
     this.layer.add(this.Cursor.transformer);
     this.stage.add(this.layer);
     this.Cursor.CursorPositionListener();
-    this.Cursor.CursorShapeSelectionListener(this.shapes);
+    this.Cursor.CursorShapeSelectionListener(this.shapes, this.layer);
     this.Cursor.CursorTransformationListener();
     this.Cursor.CursorDraggerListener();
   }
@@ -96,9 +96,12 @@ export class CanvasManagerService {
         }
       }
       this.req.deleteRequest(id)
-      .subscribe(data => { console.log(`shape deleted #${id}\n` + data) });
+      .subscribe(data => {
+        this.Cursor.emptySelection();
 
-      this.Cursor.emptySelection();
+         console.log(`shape deleted #${id}\n` + data)
+         });
+
     }
 }
 
@@ -115,4 +118,22 @@ export class CanvasManagerService {
     }
   }
 
+
+  public undo(){
+   /* this.req.undoRequest()
+    .subscribe(data =>
+      {
+        //console.log(data);
+      });
+      */
+  }
+
+
+  public redo(){
+   /* this.req.redoRequest()
+    .subscribe(data =>{
+      //console.log(data);
+    });
+    */
+  }
 }

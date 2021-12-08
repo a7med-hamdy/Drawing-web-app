@@ -116,7 +116,7 @@ public class editRequestsController{
         return "success";
     }
 
-    @GetMapping("/undo")
+    @PostMapping("/undo")
     public String undoReq() 
     {
         String json;
@@ -131,7 +131,7 @@ public class editRequestsController{
         return json;
     }
 
-    @GetMapping("/redo")
+    @PostMapping("/redo")
     public String redoReq()
     {
         String json;
