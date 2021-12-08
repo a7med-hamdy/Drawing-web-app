@@ -25,6 +25,7 @@ import org.json.XML;
 import com.example.drawingserver.shapes.shapeInterface;
 import com.example.drawingserver.shapes.shapeWarehouse;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -55,7 +56,7 @@ public class fileRequestsController {
     public ResponseEntity<Object> saveReq() throws TransformerFactoryConfigurationError, TransformerException, IOException{
         
         String xmlString = "";
-        String element = gson.toJson(this.warehouse.getList(),new TypeToken<ArrayList<shapeInterface>>() {}.getType()); 
+        String element = this.gson.toJson(this.warehouse.getList(),new TypeToken<ArrayList<shapeInterface>>() {}.getType()); 
         JSONArray list = new JSONArray(element);
         JSONObject json = new JSONObject("{shape:"+list + "}");
         xmlString = XML.toString(json);
@@ -84,7 +85,7 @@ public class fileRequestsController {
                 // Content-Type
                 .contentType(MediaType.parseMediaType("application/xml"))
                 // Contet-Length
-                .contentLength(file.length()) //
+                .contentLength(file.length()) 
                 .body(resource);
     }
     
@@ -94,10 +95,11 @@ public class fileRequestsController {
         try {  
             JSONObject json = XML.toJSONObject(content);   
             String jsonString = json.toString(2);
-            jsonString = "{"+jsonString.substring(23, jsonString.length()-3) + "}";
-            shapeInterface s = gson.fromJson(jsonString, shapeInterface.class);
+            jsonString = "{\n"+jsonString.substring(23, jsonString.length()-3) + "}";
+            //shapeInterface s = gson.fromJson(jsonString, shapeInterface.class);
+            //JSONArray list = new JSONArray(jsonString);
             System.out.println(jsonString);  
-            }catch (JSONException e) {
+            }catch (JSONException | StringIndexOutOfBoundsException e) {
                 System.out.println(e.toString());  
             }
              

@@ -148,18 +148,18 @@ public class editRequestsController{
 
     private String jsonList(ArrayList<shapeInterface> list) throws JsonProcessingException
     {
-        String json = "{";
+        String json = "[";
         for(shapeInterface shape : list)
         {
             String s = map.writeValueAsString(shape);
             json = json + s + ", ";
         }
         try{
-            json = json.substring(0, json.length()-2) + "}";
+            json = json.substring(0, json.length()-2) + "]";
         }
         catch(StringIndexOutOfBoundsException e)
         {
-            return "{}";
+            return "[]";
         }
         return json;
     }
