@@ -22,9 +22,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
+
+import com.example.drawingserver.shapes.DeserializationAdapter;
 import com.example.drawingserver.shapes.shapeInterface;
 import com.example.drawingserver.shapes.shapeWarehouse;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -92,17 +95,25 @@ public class fileRequestsController {
     @PostMapping("/load")
     public String loadReq(@RequestParam("file") MultipartFile file) throws IOException{
         String content = new String(file.getBytes());
+        String jsonString = "";
         try {  
             JSONObject json = XML.toJSONObject(content);   
-            String jsonString = json.toString(2);
-            jsonString = "{\n"+jsonString.substring(23, jsonString.length()-3) + "}";
+            jsonString = json.toString(2);
+            jsonString = jsonString.substring(21, jsonString.length()-2);
             //shapeInterface s = gson.fromJson(jsonString, shapeInterface.class);
-            //JSONArray list = new JSONArray(jsonString);
-            System.out.println(jsonString);  
-            }catch (JSONException | StringIndexOutOfBoundsException e) {
-                System.out.println(e.toString());  
-            }
-             
+            //JSONArray list = new JSONArray(jsonString); 
+        }catch (JSONException | StringIndexOutOfBoundsException e) {
+            System.out.println(e.toString());  
+        }
+
+        GsonBuilder builder = new GsonBuilder(); 
+        builder.registerTypeAdapter(shapeInterface.class, new DeserializationAdapter());  
+        Gson g = builder.create();
+        shapeInterface [] shapes = g.fromJson(jsonString, shapeInterface[].class);
+        for(shapeInterface s:shapes)
+        {
+            System.out.println(s.getPostion()[0] + s.getvalues()[0]);
+        }
         return content;
     }
 }
