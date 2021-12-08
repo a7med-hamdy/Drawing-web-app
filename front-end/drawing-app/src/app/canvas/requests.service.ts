@@ -24,16 +24,10 @@ export class RequestsService {
         console.error(err);
         throw err;
       })
-<<<<<<< HEAD
       );
   }
-
-=======
-      ); 
-  } 
-/* 
+/*
   Garbage :'( :'( :'(
->>>>>>> e4dbf8ec4a5870b2ee42dd4ac51c1d4663aaa77e
   //"/draw:{shape}"
   drawRequest(type: string) {
     let url = `http://localhost:8080/edit/draw:${type}`;
@@ -84,7 +78,7 @@ export class RequestsService {
     console.log("undoRequest!!")
     let url = this.URL + `/edit/undo`;
     return this.http.post<any>(url, { 'content-type': 'application/json'})
-    /* .pipe( catchError((err) => { console.error(err); throw err; }) ); */ 
+    /* .pipe( catchError((err) => { console.error(err); throw err; }) ); */
   }
 
   //return list of shapes as JSON object

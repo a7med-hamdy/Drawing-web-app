@@ -191,26 +191,26 @@ export class CursorService {
   public CursorDraggerListener(){
     const component = this;
 
-    this.stage.on("mousedown", function(e){
+    this.stage.on("dragstart", function(e){
       if(component.selectedShape instanceof Konva.Line){
-        e.target.on('drag', function(){
+        e.target.on('dragend', function(){
             component.sendMove(component.lineAnchor1.x(), component.lineAnchor1.y(), component.selectedShape.getAttr('id'));
             //component.selectedShape = e.target;
             console.log(component.selectedShape);
         });
-      e.target.on('drag', function(){
+      e.target.on('dragend', function(){
         component.sendResize(component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
         //component.selectedShape = e.target;
         console.log(component.selectedShape);
     });
     }
-    else{
+    else if(e.target instanceof Konva.Shape){
+      component.selectedShape = e.target;
       e.target.on('dragend', function(){
         component.sendMove(e.target.x(), e.target.y(), e.target.getAttr('id'));
-        //component.selectedShape = e.target;
-        console.log(component.selectedShape);
       });
     }
+
     return;
   });
   return;
