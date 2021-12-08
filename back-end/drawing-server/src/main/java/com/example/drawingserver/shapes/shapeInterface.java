@@ -30,4 +30,5 @@ public interface shapeInterface {
     String getType();
 
     shapeInterface clone() throws CloneNotSupportedException;
+    
 }
