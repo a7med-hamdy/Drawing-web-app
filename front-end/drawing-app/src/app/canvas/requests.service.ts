@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
 import { catchError, map, Observable } from 'rxjs';
 import { Shape } from '../Shape';
 @Injectable({
@@ -90,16 +90,13 @@ export class RequestsService {
   }
 
   /////////////////////////////////////////////////////////////////////////////
+  upload(file: File): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
 
-  saveRequest() {
-    let url = this.URL + "/file/save";
-    this.http.post<any>(url, { observe: "data" })
+    formData.append('file', file);
+
+    const req = new HttpRequest('POST', `${this.URL}/file/load`, formData, { responseType: 'json'});
+
+    return this.http.request(req);
   }
-
-  loadRequest() {
-    let url = this.URL + "/file/load";
-    return this.http.get<any>(url).subscribe(/*response => {}*/)
-  }
-
-  /////////////////////////////////////////////////////////////////////////////
 }

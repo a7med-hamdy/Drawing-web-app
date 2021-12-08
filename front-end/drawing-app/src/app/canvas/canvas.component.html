@@ -2,8 +2,8 @@
   <div class="operations">
     <button title="copy"(click) = "CanvasManager.copyShape()">⧉</button>
     <button title="delete" (click) = "CanvasManager.deleteShape()" >🗑</button>
-    <button title="save" id="save"><a href="http://localhost:8080/file/save" download>🖬</a></button>
-    <button title="load" id="load">load</button>
+    <button title="save" class="save">🖬</button>
+    <button title="load" class="load">load</button>
     <button title="undo" (click) = "CanvasManager.undo()" >⟲</button>
     <button title="redo" (click)="CanvasManager.redo()">⟳</button>
   </div>
@@ -36,10 +36,18 @@
   <div id="container"></div>
 </section>
 
-  <form>
-    <input type="file" id="upload" name="conver" accept="text/xml , application/JSON">
+  <!--<form>
+    <input type="file" id="upload"  name="file" accept="text/xml , application/JSON">
     <input type="submit" id="done">
-  </form>
+  </form>-->
+  <div>
+  <input type="file"  name="file" accept="text/xml , application/JSON" (change)="selectFile($event)" />
+  <button class="btn btn-success btn-sm" [disabled]="!selectedFiles" (click)="upload()">press</button>
+    </div>
+  <div class="download">
+    <a href="http://localhost:8080/file/save/Xml" download>zeft xml</a>
+    <a href="http://localhost:8080/file/save/JSON" download>zeft Json</a>
+  </div>
 
 <div class="uplo">
 
