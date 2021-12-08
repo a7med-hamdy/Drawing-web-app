@@ -4,8 +4,8 @@
     <button title="delete" (click) = "CanvasManager.deleteShape()" >🗑</button>
     <button title="save" id="save"><a href="http://localhost:8080/file/save" download>🖬</a></button>
     <button title="load" id="load">load</button>
-    <button title="undo" >&#x238C;</button>
-    <button title="redo" >redo</button>
+    <button title="undo" (click) = "CanvasManager.undo()" >⟲</button>
+    <button title="redo" (click)="CanvasManager.redo()">⟳</button>
   </div>
 
   <div class="shapes">
@@ -14,7 +14,7 @@
   <button title="create circle" (click) = "CanvasManager.createShape('circle')">⬤</button>
   <button title="create ellipse" (click) = "CanvasManager.createShape('ellipse')">⬬</button>
   <button title="create rectangle" (click) = "CanvasManager.createShape('rectangle')">▬</button>
-  <button title="create line sigmant" (click) = "CanvasManager.createShape('line')">┃</button>
+  <button title="create line" (click) = "CanvasManager.createShape('line')">┃</button>
 </div>
 
 

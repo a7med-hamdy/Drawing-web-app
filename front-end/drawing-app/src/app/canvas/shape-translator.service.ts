@@ -12,9 +12,9 @@ export class ShapeTranslatorService {
     if(shape.type == 'line'){
         return new Konva.Line({
           name: shape.type,
-          //points: shape.points,
-          x: shape.postion[0],
-          y: shape.postion[1],
+          points: [shape.postion[0],shape.postion[1],shape.values[0], shape.values[1]],
+         /* x: shape.postion[0],
+          y: shape.postion[1],*/
           fill:shape.color,
           stroke:shape.strokeColor,
           strokeWidth:shape.strokeWidth,

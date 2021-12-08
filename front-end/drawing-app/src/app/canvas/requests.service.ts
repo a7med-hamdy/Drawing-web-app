@@ -6,7 +6,7 @@ import { Shape } from '../Shape';
   providedIn: 'root'
 })
 export class RequestsService {
-  
+
   reqHeader = new HttpHeaders({ 'Content-Type': 'application/json' });
   editURL = "http://localhost:8080/edit";
   fileURL = "http://localhost:8080/file";
@@ -25,8 +25,8 @@ export class RequestsService {
         console.error(err);
         throw err;
       })
-      ); 
-  } 
+      );
+  }
 
   //"/draw:{shape}"
   drawRequest(type: string) {
@@ -43,7 +43,7 @@ export class RequestsService {
     return this.http.get(url, {headers: this.reqHeader , responseType: 'text'})
     /* .pipe( catchError((err) => { console.error(err); throw err; }) );  */
   }
-  
+
   //"/{id}/resize:{v1},{v2}"
   resizeRequest(id: number, v1: number, v2: number): Observable<any> {
     let url = `http://localhost:8080/edit/${id}/resize:${v1},${v2}`;

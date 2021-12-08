@@ -14,7 +14,8 @@ export class CursorService {
     rotateEnabled:false,
     ignoreStroke:true
   });
-
+  lineAnchor1!:any;
+  lineAnchor2!:any;
 
   constructor(stg:Konva.Stage, public req: RequestsService) {
     this.stage = stg;
@@ -33,10 +34,33 @@ export class CursorService {
         'bottom-center',
         'bottom-right'
       ]
-    })
+    });
+    if(this.lineAnchor1 instanceof Konva.Circle)
+      this.lineAnchor1.destroy();
+    else
+      this.lineAnchor1 = null;
+      if(this.lineAnchor2 instanceof Konva.Circle)
+      this.lineAnchor2.destroy();
+    else
+      this.lineAnchor2 = null;
+
     this.transformer.nodes([]);
   }
 
+  public sendResize(targetWdth:any, targetHeigt:any, id:any){
+    this.req.resizeRequest(id, Math.trunc(targetWdth), Math.trunc(targetHeigt))
+    .subscribe(data => {
+
+      console.log(`size changed to: (${targetWdth},${targetHeigt})\nshape #${id}\n` + data)
+    });
+  }
+
+  public sendMove(targetX:any, targetY:any, id:any){
+    this.req.moveRequest(id, Math.trunc(targetX), Math.trunc(targetY))
+    .subscribe(data => {
+      console.log(`position changed to: (${targetX},${targetY})\nshape #${id}\n` + data)
+    })
+  }
   public CursorPositionListener(){
     const component = this;
      this.stage.on('mousemove', function(){
@@ -45,21 +69,23 @@ export class CursorService {
   }
 
 
-  public CursorShapeSelectionListener(shapes:any){
+  public CursorShapeSelectionListener(shapes:any, lyer:Konva.Layer){
     const component = this;
     //selection on click
     this.stage.on('dblclick', function (e) {
       // if click on empty area - remove all selections
       if (e.target === component.stage) {
-        //component.selected = [];
         component.emptySelection();
-
+        return;
+      }
+      if(e.target === component.lineAnchor1 || e.target === component.lineAnchor2){
         return;
       }
       if(e.target instanceof Konva.Shape){
 
         //filter the selected shapes if multiple clicks on the same shape
         if(e.target instanceof Konva.Circle || e.target.name() == 'square'){
+          component.emptySelection();
           component.transformer.setAttrs({
             enabledAnchors:[
               "top-left",
@@ -68,8 +94,51 @@ export class CursorService {
               "bottom-right",
             ]
           });
+          component.selectedShape = e.target;
+          component.transformer.nodes([component.selectedShape]);
+        }
+        else if(e.target instanceof Konva.Line){
+          component.emptySelection();
+          component.selectedShape = e.target;
+          component.lineAnchor1= new Konva.Circle({
+            x: e.target.points()[0],
+            y: e.target.points()[1],
+            radius: 10,
+            fill: 'grey',
+            stroke:"red",
+            draggable: true
+          })
+          lyer.add(component.lineAnchor1);
+
+          component.lineAnchor2 = new Konva.Circle({
+
+            x: e.target.points()[2],
+            y: e.target.points()[3],
+            radius: 10,
+            fill: 'grey',
+            stroke:"blue",
+            draggable: true
+          })
+          lyer.add(component.lineAnchor2);
+          function updateLine() {
+            const pointsArr = [
+              component.lineAnchor1.x(),
+              component.lineAnchor1.y(),
+              component.lineAnchor2.x(),
+              component.lineAnchor2.y(),
+            ]
+            e.target.setAttrs({
+              points:pointsArr,
+            });
+            //lyer.batchDraw();
+          }
+
+          component.lineAnchor1.on('dragmove', updateLine);
+          component.lineAnchor2.on('dragmove', updateLine);
+
         }
         else{
+          component.emptySelection();
           component.transformer.setAttrs({
             enabledAnchors:[
               'top-left',
@@ -82,11 +151,11 @@ export class CursorService {
               'bottom-right'
             ]
           });
-        }
-        component.selectedShape = e.target;
-        console.log(component.selectedShape);
-        component.transformer.nodes([component.selectedShape]);
+          component.selectedShape = e.target;
+          component.transformer.nodes([component.selectedShape]);
 
+        }
+        console.log(component.selectedShape);
         return;
       }
   });
@@ -96,27 +165,22 @@ export class CursorService {
       const component = this;
 
       this.stage.on("mousemove", function(e){
-        e.target.on('transformend', function(){
+        if(e.target === component.lineAnchor1 || e.target === component.lineAnchor2){return;}
+        var id = e.target.getAttr('id');
+          e.target.on('transformend', function(){
+            e.target.setAttrs({
+              width:  Math.max(5,Math.abs(e.target.width() * e.target.scaleX())),
+              height: Math.max(5,Math.abs(e.target.height() * e.target.scaleY())),
+              scaleX: 1,
+              scaleY: 1,
+            });
 
-          e.target.setAttrs({
-            width:  Math.max(5,Math.abs(e.target.width() * e.target.scaleX())),
-            height: Math.max(5,Math.abs(e.target.height() * e.target.scaleY())),
-            scaleX: 1,
-            scaleY: 1,
-          });
+            component.sendResize(e.target.width(), e.target.height(),id);
+            component.sendMove(e.target.x(),e.target.y(),id);
 
-          component.req.resizeRequest(e.target.getAttr('id'), Math.trunc(e.target.width()), Math.trunc(e.target.height()))
-          .subscribe(data => {
+            component.selectedShape = e.target;
+            console.log(component.selectedShape);
 
-            console.log(`size changed to: (${e.target.width()},${e.target.height()})\nshape #${e.target.getAttr('id')}\n` + data)
-          });
-
-          component.req.moveRequest(e.target.getAttr('id'), Math.trunc(e.target.x()), Math.trunc(e.target.y()))
-          .subscribe(data => {
-            console.log(`position changed to: (${e.target.x()},${e.target.y()})\nshape #${e.target.getAttr('id')}\n` + data)
-          })
-          component.selectedShape = e.target;
-          console.log(component.selectedShape);
           return;
       });
       return;
@@ -128,16 +192,25 @@ export class CursorService {
     const component = this;
 
     this.stage.on("mousedown", function(e){
-      e.target.on('dragend', function(){
-
-        component.req.moveRequest(e.target.getAttr('id'), Math.trunc(e.target.x()), Math.trunc(e.target.y()))
-        .subscribe(data => {
-          console.log(`position changed to: (${e.target.x()},${e.target.y()})\nshape #${e.target.getAttr('id')}\n` + data)
-        })
-        component.selectedShape = e.target;
+      if(component.selectedShape instanceof Konva.Line){
+        e.target.on('drag', function(){
+            component.sendMove(component.lineAnchor1.x(), component.lineAnchor1.y(), component.selectedShape.getAttr('id'));
+            //component.selectedShape = e.target;
+            console.log(component.selectedShape);
+        });
+      e.target.on('drag', function(){
+        component.sendResize(component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
+        //component.selectedShape = e.target;
         console.log(component.selectedShape);
-        return;
     });
+    }
+    else{
+      e.target.on('dragend', function(){
+        component.sendMove(e.target.x(), e.target.y(), e.target.getAttr('id'));
+        //component.selectedShape = e.target;
+        console.log(component.selectedShape);
+      });
+    }
     return;
   });
   return;
