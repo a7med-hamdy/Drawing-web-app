@@ -61,6 +61,7 @@ public class fileRequestsController {
         String xmlString = "";
         String element = this.gson.toJson(this.warehouse.getList(),new TypeToken<ArrayList<shapeInterface>>() {}.getType()); 
         JSONArray list = new JSONArray(element);
+        System.out.println(list);
         JSONObject json = new JSONObject("{shape:"+list + "}");
         xmlString = XML.toString(json);
         xmlString = "<shapes>" + xmlString + " "+"</shapes>";

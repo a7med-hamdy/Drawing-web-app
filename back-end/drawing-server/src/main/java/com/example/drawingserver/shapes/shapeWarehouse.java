@@ -115,7 +115,8 @@ public class shapeWarehouse {
         ArrayList<shapeInterface> temp = new ArrayList<>();
         for(shapeInterface s : list)
         {
-            temp.add(s.clone());
+            shape x = (shape) s; 
+            temp.add(x.copy());
         }
         return temp;
     }
