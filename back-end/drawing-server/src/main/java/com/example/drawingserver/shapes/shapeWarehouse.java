@@ -1,14 +1,9 @@
 package com.example.drawingserver.shapes;
 import java.util.Stack;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-@XmlRootElement
 public class shapeWarehouse {
     private Stack<ArrayList<shapeInterface>> undo = new Stack<>();
 
@@ -28,12 +23,15 @@ public class shapeWarehouse {
         return instance;
     }
 
-    @XmlElementWrapper(name = "List")
-    @XmlElement(name = "shape")
     public ArrayList<shapeInterface> getList(){
         return this.shapes;
     }
 
+    public void setList(ArrayList<shapeInterface> list){
+        this.undo.clear();
+        this.redo.clear();
+        this.shapes = list;
+    }
     public void addShape(shapeInterface s) throws CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));

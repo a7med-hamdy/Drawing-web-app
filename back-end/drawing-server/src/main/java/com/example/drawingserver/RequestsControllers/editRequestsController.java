@@ -36,8 +36,7 @@ public class editRequestsController{
     // (waiting for clicking on the board to insert the object)
     @PostMapping("/create:{shape}:{x},{y}")
     public String createShape(@PathVariable String shape, @PathVariable int x, @PathVariable int y) throws JsonProcessingException{
-        shapeInterface s = this.factory.factorShape(shape);
-        s.setPostion(x, y);
+        shapeInterface s = this.factory.factorShape(shape,x,y);
         try {
             this.warehouse.addShape(s);
         } catch (CloneNotSupportedException e) {

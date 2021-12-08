@@ -2,11 +2,10 @@ package com.example.drawingserver.RequestsControllers;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.file.Files;
+
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -28,14 +27,13 @@ import com.example.drawingserver.shapes.shapeInterface;
 import com.example.drawingserver.shapes.shapeWarehouse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,40 +52,50 @@ public class fileRequestsController {
         this.warehouse = shapeWarehouse.getInstanceOf();
         this.gson = new Gson();
     }
-    @GetMapping("/save")
+    @GetMapping("/save/{type}")
     @ResponseBody
-    public ResponseEntity<Object> saveReq() throws TransformerFactoryConfigurationError, TransformerException, IOException{
+    public ResponseEntity<Object> saveReq(@PathVariable String type) throws TransformerFactoryConfigurationError, TransformerException, IOException{
         
-        String xmlString = "";
-        String element = this.gson.toJson(this.warehouse.getList(),new TypeToken<ArrayList<shapeInterface>>() {}.getType()); 
-        JSONArray list = new JSONArray(element);
-        System.out.println(list);
-        JSONObject json = new JSONObject("{shape:"+list + "}");
-        xmlString = XML.toString(json);
-        xmlString = "<shapes>" + xmlString + " "+"</shapes>";
-
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "iso-8859-1");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
- 
-        transformer.transform(new StringSource(xmlString), streamResult);
-        xmlString = stringWriter.toString();
-        File file = new File("try.xml");
-        FileWriter myWriter = new FileWriter("try.xml");
-        myWriter.write(xmlString);
+        String string = "";
+        String filename = "saved drawing" + Math.random()*20000;
+        String mediatype = "";
+        String element = this.gson.toJson(this.warehouse.getList(),new TypeToken<ArrayList<shapeInterface>>() {}.getType()); 
+        JSONArray list = new JSONArray(element);
+        if(type.equalsIgnoreCase("json"))
+        {
+            string = list.toString();
+            filename = filename + ".json";
+            mediatype = "application/json";
+        }
+        else
+        {
+            JSONObject json = new JSONObject("{shape:"+list + "}");
+            string = XML.toString(json);
+            string = "<shapes>" + string + " "+"</shapes>";
+            Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "iso-8859-1");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            transformer.transform(new StringSource(string), streamResult);
+            string = stringWriter.toString();
+            filename = filename + ".xml";
+            mediatype = "application/xml";
+        }  
+        File file = new File(filename);
+        FileWriter myWriter = new FileWriter(filename);
+        myWriter.write(string);
         myWriter.close();
+        
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
                 // Content-Disposition
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
                 // Content-Type
-                .contentType(MediaType.parseMediaType("application/xml"))
+                .contentType(MediaType.parseMediaType(mediatype))
                 // Contet-Length
                 .contentLength(file.length()) 
                 .body(resource);
@@ -97,24 +105,32 @@ public class fileRequestsController {
     public String loadReq(@RequestParam("file") MultipartFile file) throws IOException{
         String content = new String(file.getBytes());
         String jsonString = "";
-        try {  
-            JSONObject json = XML.toJSONObject(content);   
-            jsonString = json.toString(2);
-            jsonString = jsonString.substring(21, jsonString.length()-2);
-            //shapeInterface s = gson.fromJson(jsonString, shapeInterface.class);
-            //JSONArray list = new JSONArray(jsonString); 
-        }catch (JSONException | StringIndexOutOfBoundsException e) {
-            System.out.println(e.toString());  
-        }
+        if(file.getContentType().equalsIgnoreCase("application/xml"))
+        {
+            try {  
+                JSONObject json = XML.toJSONObject(content);   
+                jsonString = json.toString(2);
+                jsonString = jsonString.substring(21, jsonString.length()-2);
+                content = jsonString;
+            }catch (JSONException | StringIndexOutOfBoundsException e) {
+                content = "[]";
+                
+            }
+        } 
+        updateList(content);
+        return content;
+    }
 
+    private void updateList(String content){
         GsonBuilder builder = new GsonBuilder(); 
         builder.registerTypeAdapter(shapeInterface.class, new DeserializationAdapter());  
         Gson g = builder.create();
-        shapeInterface [] shapes = g.fromJson(jsonString, shapeInterface[].class);
+        shapeInterface [] shapes = g.fromJson(content, shapeInterface[].class);
+        ArrayList<shapeInterface> list = new ArrayList<>();
         for(shapeInterface s:shapes)
         {
-            System.out.println(s.getPostion()[0] + s.getvalues()[0]);
+            list.add(s);
         }
-        return content;
+        this.warehouse.setList(list);
     }
 }
