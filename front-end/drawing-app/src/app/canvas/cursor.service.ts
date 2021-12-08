@@ -168,16 +168,17 @@ export class CursorService {
         if(e.target === component.lineAnchor1 || e.target === component.lineAnchor2){return;}
         var id = e.target.getAttr('id');
           e.target.on('transformend', function(){
+            var olddate = Date.now();
             e.target.setAttrs({
               width:  Math.max(5,Math.abs(e.target.width() * e.target.scaleX())),
               height: Math.max(5,Math.abs(e.target.height() * e.target.scaleY())),
               scaleX: 1,
               scaleY: 1,
             });
-
-            component.sendResize(e.target.width(), e.target.height(),id);
-            component.sendMove(e.target.x(),e.target.y(),id);
-
+            if(Date.now() - olddate > 1){
+              component.sendResize(e.target.width(), e.target.height(),id);
+              component.sendMove(e.target.x(),e.target.y(),id);
+            }
             component.selectedShape = e.target;
             console.log(component.selectedShape);
 

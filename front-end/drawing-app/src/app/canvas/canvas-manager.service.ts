@@ -110,6 +110,12 @@ export class CanvasManagerService {
       this.Cursor.selectedShape.setAttrs({
         fill:color
       });
+      if(this.Cursor.selectedShape instanceof Konva.Line){
+        this.Cursor.selectedShape.setAttrs({
+          fill:color,
+          stroke:color,
+        })
+      }
       this.req.colorRequest(id, color)
       .subscribe(data => { console.log(`color changed to: ${color}\nshape #${id}\n` + data) });
     }
