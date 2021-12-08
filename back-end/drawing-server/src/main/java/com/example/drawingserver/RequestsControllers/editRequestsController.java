@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +38,11 @@ public class editRequestsController{
     public String createShape(@PathVariable String shape, @PathVariable int x, @PathVariable int y) throws JsonProcessingException{
         shapeInterface s = this.factory.factorShape(shape);
         s.setPostion(x, y);
-        this.warehouse.addShape(s);
+        try {
+            this.warehouse.addShape(s);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
         System.out.println(map.writeValueAsString(s));
         return map.writeValueAsString(s);
     }
@@ -60,7 +63,7 @@ public class editRequestsController{
         try{
             this.warehouse.changeColor(id, color);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             System.out.println(id + "\tfail " + color);
             return "fail";
         }
@@ -74,7 +77,7 @@ public class editRequestsController{
         try{
             this.warehouse.changeSize(id, v1, v2);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             return "fail";
         }
         return "success";
@@ -86,7 +89,7 @@ public class editRequestsController{
         try{
             this.warehouse.changeLocation(id, x, y);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             return "fail";
         }
         return "success";
@@ -107,13 +110,13 @@ public class editRequestsController{
         try{
             this.warehouse.removeShape(id);
         }
-        catch(IndexOutOfBoundsException e){
+        catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             return "fail";
         }
         return "success";
     }
 
-    @GetMapping("/undo")
+    @PostMapping("/undo")
     public String undoReq() 
     {
         String json;
@@ -128,7 +131,7 @@ public class editRequestsController{
         return json;
     }
 
-    @GetMapping("/redo")
+    @PostMapping("/redo")
     public String redoReq()
     {
         String json;
@@ -145,18 +148,18 @@ public class editRequestsController{
 
     private String jsonList(ArrayList<shapeInterface> list) throws JsonProcessingException
     {
-        String json = "{";
+        String json = "[";
         for(shapeInterface shape : list)
         {
             String s = map.writeValueAsString(shape);
             json = json + s + ", ";
         }
         try{
-            json = json.substring(0, json.length()-2) + "}";
+            json = json.substring(0, json.length()-2) + "]";
         }
         catch(StringIndexOutOfBoundsException e)
         {
-            return "{}";
+            return "[]";
         }
         return json;
     }
