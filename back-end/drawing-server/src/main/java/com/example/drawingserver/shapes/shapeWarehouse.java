@@ -79,12 +79,13 @@ public class shapeWarehouse {
         this.shapes.get(index).setColor(color);
     }
 
-    public void changeSize(int id, int x, int y)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException
+    public void changeSize(int id, int x, int y ,int pos1 , int pos2)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
         int index = getShapeIndex(id);
         this.shapes.get(index).setDimensions(x, y);
+        this.shapes.get(index).setPostion(pos1, pos2);
     }
 
     public void changeLocation(int id, int x, int y)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException

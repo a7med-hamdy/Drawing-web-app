@@ -47,8 +47,8 @@ export class CursorService {
     this.transformer.nodes([]);
   }
 
-  public sendResize(targetWdth:any, targetHeigt:any, id:any){
-    this.req.resizeRequest(id, Math.trunc(targetWdth), Math.trunc(targetHeigt))
+  public sendResize(targetX:any, targetY:any,targetWdth:any, targetHeigt:any, id:any){
+    this.req.resizeRequest(id, Math.trunc(targetWdth), Math.trunc(targetHeigt),Math.trunc(targetX),Math.trunc(targetY))
     .subscribe(data => {
 
       console.log(`size changed to: (${targetWdth},${targetHeigt})\nshape #${id}\n` + data)
@@ -184,8 +184,8 @@ export class CursorService {
             changesdim.push([e.target.width(),e.target.height()]);
             changespos.push([e.target.x(), e.target.y()]);
             if(Math.abs(Date.now()- olddate) != 0){
-              component.sendMove(changespos[changespos.length-1][0],changespos[changespos.length-1][1],id);
-              component.sendResize(changesdim[changesdim.length-1][0],changesdim[changesdim.length-1][1], id);
+
+              component.sendResize(changespos[changespos.length-1][0],changespos[changespos.length-1][1],changesdim[changesdim.length-1][0],changesdim[changesdim.length-1][1], id);
             }
           });
         }
@@ -204,7 +204,7 @@ export class CursorService {
             console.log(component.selectedShape);
         });
       e.target.on('dragend', function(){
-        component.sendResize(component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
+        component.sendResize(component.lineAnchor1.x(), component.lineAnchor1.y(),component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
         //component.selectedShape = e.target;
         console.log(component.selectedShape);
     });

@@ -78,10 +78,10 @@ public class editRequestsController{
     }
 
     // resizing the shape
-    @GetMapping("/{id}/resize:{v1},{v2}")
-    public String resizeReq(@PathVariable int id, @PathVariable int v1, @PathVariable int v2){
+    @GetMapping("/{id}/resize:{v1},{v2}/pos:{x},{y}")
+    public String resizeReq(@PathVariable int id, @PathVariable int v1, @PathVariable int v2 , @PathVariable int x, @PathVariable int y){
         try{
-            this.warehouse.changeSize(id, v1, v2);
+            this.warehouse.changeSize(id, v1, v2 , x ,y);
         }
         catch(IndexOutOfBoundsException | CloneNotSupportedException e){
             return "fail";

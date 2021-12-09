@@ -156,3 +156,29 @@ input{
   left:650px;
   z-index: 6;
 }
+.out{
+  position: relative;
+  top: -18px;
+  left: 0;
+  border-radius: 0;
+  font-size: 15px;
+  background-color: aliceblue;
+  color:black;
+  transition: 0.5s;
+}
+.out:hover{
+  color:red;
+}
+.out2{
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0;
+  font-size: 15px;
+  background-color: aliceblue;
+  color:black;
+  transition: 0.5s;
+}
+.out2:hover{
+  color:red;
+}

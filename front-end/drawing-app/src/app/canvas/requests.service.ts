@@ -43,8 +43,8 @@ export class RequestsService {
   }
 
   //"/{id}/resize:{v1},{v2}"
-  resizeRequest(id: number, v1: number, v2: number): Observable<any> {
-    let url = this.URL + `/edit/${id}/resize:${v1},${v2}`;
+  resizeRequest(id: number, v1: number, v2: number,pos1: number, pos2: number): Observable<any> {
+    let url = this.URL + `/edit/${id}/resize:${v1},${v2}/pos:${pos1},${pos2}`;
     return this.http.get(url, {headers: this.reqHeader , responseType: 'text'})
   }
 
@@ -89,7 +89,7 @@ export class RequestsService {
 
   /////////////////////////////////////////////////////////////////////////////
   upload(file: string, type :  string): Observable<any> {
-    const body={title :file}
+
     let url = this.URL + `/file/load`;
     let params = new HttpParams();
     params = params.append('file', file);
