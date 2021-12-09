@@ -14,7 +14,7 @@ export class ShapeTranslatorService {
           name: shape.type,
           points: [shape.postion[0],shape.postion[1],shape.values[0], shape.values[1]],
           fill:shape.color,
-          stroke:shape.strokeColor,
+          stroke:shape.color,
           strokeWidth:shape.strokeWidth,
           id: shape.id.toString(),
         })
