@@ -16,6 +16,7 @@ export class CanvasManagerService {
   Cursor!:CursorService;
   ShapeTranslator:ShapeTranslatorService = new ShapeTranslatorService();
   shape!: any;
+  selectedFiles?: File;
 
   constructor(stg:Konva.Stage, lyer:Konva.Layer, public req:RequestsService) {
     this.stage = stg;
@@ -193,5 +194,19 @@ export class CanvasManagerService {
         console.log(`REDO action:\n` + JSON.stringify(data))
       });
 
+  }
+
+  public Uploadfile(event: any):void{
+    this.Cursor.emptySelection();
+    this.selectedFiles = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = (e) => {
+      let x = reader.result as string;
+      this.req.upload(x, <string>this.selectedFiles?.type)
+      .subscribe(data => 
+        console.log(data)
+        )
+   };
+    reader.readAsText(event.target.files[0])
   }
 }
