@@ -197,22 +197,19 @@ export class CursorService {
 
     this.stage.on("dragstart", function(e){
       if(component.selectedShape instanceof Konva.Line){
-
-      e.target.on('dragend', function(){
-        component.sendMove(component.lineAnchor1.x(), component.lineAnchor1.y(), component.selectedShape.getAttr('id'));
-        console.log(component.selectedShape);
-        component.sendResize(component.lineAnchor1.x(), component.lineAnchor1.y(),component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
-        //component.selectedShape = e.target;
-        console.log(component.selectedShape);
-    });
+        e.target.on('dragend', function(){
+          console.log(component.selectedShape);
+          component.sendResize(component.lineAnchor1.x(), component.lineAnchor1.y(),component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
+          console.log(component.selectedShape);
+          e.target.off('dragend')
+        });
     }
     else if(e.target instanceof Konva.Shape){
-      component.selectedShape = e.target;
       e.target.on('dragend', function(){
         component.sendMove(Math.trunc(e.target.x()), Math.trunc(e.target.y()), e.target.getAttr('id'));
+        e.target.off('dragend');
       });
     }
-    component.stage.off('dragstart');
     return;
   });
   return;
