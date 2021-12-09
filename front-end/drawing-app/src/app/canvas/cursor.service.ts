@@ -84,7 +84,7 @@ export class CursorService {
       if(e.target instanceof Konva.Shape){
 
         //filter the selected shapes if multiple clicks on the same shape
-        if(e.target instanceof Konva.Circle || e.target.name() == 'square'){
+        if(e.target instanceof Konva.Circle || e.target.name() == 'square' || e.target.name() == 'triangle'){
           component.emptySelection();
           component.transformer.setAttrs({
             enabledAnchors:[
@@ -184,7 +184,6 @@ export class CursorService {
             changesdim.push([e.target.width(),e.target.height()]);
             changespos.push([e.target.x(), e.target.y()]);
             if(Math.abs(Date.now()- olddate) != 0){
-
               component.sendResize(changespos[changespos.length-1][0],changespos[changespos.length-1][1],changesdim[changesdim.length-1][0],changesdim[changesdim.length-1][1], id);
             }
           });
@@ -198,12 +197,10 @@ export class CursorService {
 
     this.stage.on("dragstart", function(e){
       if(component.selectedShape instanceof Konva.Line){
-        e.target.on('dragend', function(){
-            component.sendMove(component.lineAnchor1.x(), component.lineAnchor1.y(), component.selectedShape.getAttr('id'));
-            //component.selectedShape = e.target;
-            console.log(component.selectedShape);
-        });
+
       e.target.on('dragend', function(){
+        component.sendMove(component.lineAnchor1.x(), component.lineAnchor1.y(), component.selectedShape.getAttr('id'));
+        console.log(component.selectedShape);
         component.sendResize(component.lineAnchor1.x(), component.lineAnchor1.y(),component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
         //component.selectedShape = e.target;
         console.log(component.selectedShape);
@@ -215,7 +212,7 @@ export class CursorService {
         component.sendMove(Math.trunc(e.target.x()), Math.trunc(e.target.y()), e.target.getAttr('id'));
       });
     }
-
+    component.stage.off('dragstart');
     return;
   });
   return;

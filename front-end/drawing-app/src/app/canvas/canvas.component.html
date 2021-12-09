@@ -38,13 +38,13 @@
 
 
   <div  [style.display]="load ? 'block' : 'none'" class="input">
-  <button (click)="state(2)" class="out2">🞮</button>
+  <button (click)="state(2)" class="out">🞮</button>
   <input type="file" (click)="state(1)" name="file" accept="text/xml , application/JSON" (change)="CanvasManager.Uploadfile($event)"  />
 </div>
-   <!-- <button style="background-color: aqua;" (click)="onclick()">ay haga</button>-->
+
   <div class="download" [style.display]="save ? 'block' : 'none'">
-    <button (click)="state(2)" class="out">🞮</button>
-   <button (click)="state(2)"> <a href="http://localhost:8080/file/save/Xml"  download>downlaod xml</a></button>
+    <div (click)="state(2)" class="outt">🞮</div>
+  <button (click)="state(2)"> <a href="http://localhost:8080/file/save/Xml"  download>downlaod xml</a></button>
   <button (click)="state(2)"><a href="http://localhost:8080/file/save/JSON"  download>downlaod Json</a></button>
   </div>
 
