@@ -175,6 +175,24 @@ export class CursorService {
           e.target.on('transformend', function(){
             id = e.target.getAttr('id');
             var olddate = Date.now();
+            if (e.target instanceof Konva.RegularPolygon || e.target instanceof Konva.Circle){
+              e.target.setAttrs({
+                radius:Math.trunc(e.target.radius() * e.target.scaleX()),
+                scaleX: 1,
+                scaleY: 1,
+              });
+              changesdim.push([e.target.radius(),e.target.radius()]);
+            }
+            else if(e.target instanceof Konva.Ellipse){
+              e.target.setAttrs({
+                radiusX:Math.trunc(e.target.radiusX() * e.target.scaleX()),
+                radiusY:Math.trunc(e.target.radiusY() * e.target.scaleY()),
+                scaleX: 1,
+                scaleY: 1,
+              });
+              changesdim.push([e.target.radiusX(),e.target.radiusY()]);
+            }
+            else{
             e.target.setAttrs({
               width:  Math.trunc(e.target.width() * e.target.scaleX()),
               height: Math.trunc(e.target.height() * e.target.scaleY()),
@@ -182,10 +200,13 @@ export class CursorService {
               scaleY: 1,
             });
             changesdim.push([e.target.width(),e.target.height()]);
+          }
             changespos.push([e.target.x(), e.target.y()]);
             if(Math.abs(Date.now()- olddate) != 0){
               component.sendResize(changespos[changespos.length-1][0],changespos[changespos.length-1][1],changesdim[changesdim.length-1][0],changesdim[changesdim.length-1][1], id);
             }
+            changesdim = [];
+            changespos = [];
           });
         }
       });
@@ -197,22 +218,19 @@ export class CursorService {
 
     this.stage.on("dragstart", function(e){
       if(component.selectedShape instanceof Konva.Line){
-
-      e.target.on('dragend', function(){
-        component.sendMove(component.lineAnchor1.x(), component.lineAnchor1.y(), component.selectedShape.getAttr('id'));
-        console.log(component.selectedShape);
-        component.sendResize(component.lineAnchor1.x(), component.lineAnchor1.y(),component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
-        //component.selectedShape = e.target;
-        console.log(component.selectedShape);
-    });
+        e.target.on('dragend', function(){
+          console.log(component.selectedShape);
+          component.sendResize(component.lineAnchor1.x(), component.lineAnchor1.y(),component.lineAnchor2.x(), component.lineAnchor2.y(),  component.selectedShape.getAttr('id'));
+          console.log(component.selectedShape);
+          e.target.off('dragend')
+        });
     }
     else if(e.target instanceof Konva.Shape){
-      component.selectedShape = e.target;
       e.target.on('dragend', function(){
         component.sendMove(Math.trunc(e.target.x()), Math.trunc(e.target.y()), e.target.getAttr('id'));
+        e.target.off('dragend');
       });
     }
-    component.stage.off('dragstart');
     return;
   });
   return;
