@@ -29,7 +29,21 @@ export class CanvasManagerService {
     console.log(this.layer.getChildren());
   }
 
+  public requestData():void{
+    this.req.refreshRequest()
+    .subscribe(data =>{
+      for(var i = 0; i < data.length; i++){
+        var oldshape = this.shapes.pop();
+        oldshape.destroy();
+        var newShape = this.ShapeTranslator.translateToKonva(data[i]);
+        this.addShape(newShape);
+    }
+    console.log(data);
+    })
+  }
+
    public refresh():void{
+     this.requestData();
     this.stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
@@ -123,6 +137,7 @@ export class CanvasManagerService {
 
 
   public undo(){
+    this.Cursor.emptySelection();
     this.req.undoRequest()
     .subscribe(data =>{
         if(data.length == this.shapes.length){
@@ -151,6 +166,7 @@ export class CanvasManagerService {
 
 
   public redo(){
+    this.Cursor.emptySelection();
     this.req.redoRequest()
      .subscribe(data =>
       {

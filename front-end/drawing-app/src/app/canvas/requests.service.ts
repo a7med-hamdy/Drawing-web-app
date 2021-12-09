@@ -26,13 +26,11 @@ export class RequestsService {
       })
       );
   }
-/*
-  Garbage :'( :'( :'(
-  //"/draw:{shape}"
-  drawRequest(type: string) {
-    let url = `http://localhost:8080/edit/draw:${type}`;
-    this.http.post<any>(url, { responseType: "text" })
-  } */
+  refreshRequest(): Observable<any>{
+    console.log("undoRequest!!")
+    let url = this.URL + `/edit/data`;
+    return this.http.post<any>(url, { 'content-type': 'application/json'})
+  }
 
   /////////////////////////////////////////////////////////////////////////////
 
