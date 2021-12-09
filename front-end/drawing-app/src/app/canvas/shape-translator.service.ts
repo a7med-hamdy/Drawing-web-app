@@ -68,6 +68,8 @@ export class ShapeTranslatorService {
         y: shape.postion[1],
         sides: 3,
         radius: shape.values[0],
+        width: shape.values[0],
+        height: shape.values[1],
         fill:shape.color,
         stroke:shape.strokeColor,
         strokeWidth:shape.strokeWidth,

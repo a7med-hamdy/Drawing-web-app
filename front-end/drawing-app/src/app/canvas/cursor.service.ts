@@ -163,29 +163,33 @@ export class CursorService {
 
   public CursorTransformationListener(){
       const component = this;
-
-      this.stage.on("mousemove", function(e){
+      var id;
+      var changesdim:any = [];
+      var changespos:any = [];
+      this.transformer.on("transformstart", function(e){
+        console.log('hello');
         if(e.target === component.lineAnchor1 || e.target === component.lineAnchor2){return;}
-        var id = e.target.getAttr('id');
+        if(e.target instanceof Konva.Shape){
+          component.selectedShape = e.target;
+          console.log(component.selectedShape);
           e.target.on('transformend', function(){
+            id = e.target.getAttr('id');
             var olddate = Date.now();
             e.target.setAttrs({
-              width:  Math.max(5,Math.abs(e.target.width() * e.target.scaleX())),
-              height: Math.max(5,Math.abs(e.target.height() * e.target.scaleY())),
+              width:  Math.trunc(e.target.width() * e.target.scaleX()),
+              height: Math.trunc(e.target.height() * e.target.scaleY()),
               scaleX: 1,
               scaleY: 1,
             });
-            if(Date.now() - olddate > 1){
-              component.sendResize(e.target.width(), e.target.height(),id);
-              component.sendMove(e.target.x(),e.target.y(),id);
+            changesdim.push([e.target.width(),e.target.height()]);
+            changespos.push([e.target.x(), e.target.y()]);
+            if(Math.abs(Date.now()- olddate) != 0){
+              component.sendMove(changespos[changespos.length-1][0],changespos[changespos.length-1][1],id);
+              component.sendResize(changesdim[changesdim.length-1][0],changesdim[changesdim.length-1][1], id);
             }
-            component.selectedShape = e.target;
-            console.log(component.selectedShape);
-
-          return;
+          });
+        }
       });
-      return;
-    });
     return;
   }
 
@@ -208,7 +212,7 @@ export class CursorService {
     else if(e.target instanceof Konva.Shape){
       component.selectedShape = e.target;
       e.target.on('dragend', function(){
-        component.sendMove(e.target.x(), e.target.y(), e.target.getAttr('id'));
+        component.sendMove(Math.trunc(e.target.x()), Math.trunc(e.target.y()), e.target.getAttr('id'));
       });
     }
 
