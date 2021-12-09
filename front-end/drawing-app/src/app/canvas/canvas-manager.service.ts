@@ -197,7 +197,7 @@ export class CanvasManagerService {
 
   }
 
-  public Uploadfile(event: any):void{
+  public Uploadfile2(event: any):void{
     this.Cursor.emptySelection();
     this.selectedFiles = event.target.files[0];
     const reader = new FileReader();
@@ -215,5 +215,28 @@ export class CanvasManagerService {
       });
     reader.readAsText(event.target.files[0])
   }
+}
+
+
+public Uploadfile(event: any):void{
+  this.selectedFiles = event.target.files[0];
+  const reader = new FileReader();
+  reader.onloadend = (e) => {
+    let x = reader.result as string;
+    this.req.upload(x, <string>this.selectedFiles?.type)
+    .subscribe(data => 
+      {
+        console.log(data[0])
+        if(data.length == 0){return;}
+        this.layer.destroyChildren();
+        this.shapes = [];
+        for(var i = 0; i < data.length; i++){
+          var newShape = this.ShapeTranslator.translateToKonva(data[i]);
+          this.addShape(newShape);
+        }
+        this.Cursor.emptySelection();
+      });
+ };
+  reader.readAsText(event.target.files[0])
 }
 }
