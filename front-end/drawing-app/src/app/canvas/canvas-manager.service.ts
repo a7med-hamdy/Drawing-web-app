@@ -147,13 +147,13 @@ export class CanvasManagerService {
     this.req.undoRequest()
     .subscribe(data =>{
         if(data.length == this.shapes.length){
-
+          this.layer.removeChildren();
+          this.shapes = [];
           for(var i = 0; i < data.length; i++){
-              var oldshape = this.shapes.pop();
-              oldshape.destroy();
               var newShape = this.ShapeTranslator.translateToKonva(data[i]);
               this.addShape(newShape);
           }
+          this.layer.add(this.Cursor.transformer);
         }
         if(data.length < this.shapes.length){
           var deletedShape = this.shapes.pop();
