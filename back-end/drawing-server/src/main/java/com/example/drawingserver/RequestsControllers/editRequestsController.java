@@ -55,6 +55,13 @@ public class editRequestsController{
         return shape + " drawn";
     }
 
+
+    @GetMapping("/data")
+    public String fetchData() throws JsonProcessingException{
+        ArrayList<shapeInterface> list =  this.warehouse.getList();
+        String json = jsonList(list);
+        return json;
+    }
     // changing the color of the shape
     @GetMapping("/{id}/color:{color}")
     public String setColor(@PathVariable int id, @PathVariable String color){
