@@ -3,25 +3,14 @@
 <shapes>
     <shape>
         <strokeWidth>4</strokeWidth>
-        <color>blue</color>
-        <postion>527</postion>
-        <postion>247</postion>
-        <values>70</values>
-        <values>70</values>
-        <id>247999005</id>
+        <x>312</x>
+        <y>89</y>
+        <dimension1>280</dimension1>
+        <id>244494937</id>
         <type>square</type>
-        <strokeColor>black</strokeColor>
-    </shape>
-    <shape>
-        <strokeWidth>4</strokeWidth>
-        <color>blue</color>
-        <postion>715</postion>
-        <postion>275</postion>
-        <values>80</values>
-        <values>80</values>
-        <id>775467687</id>
-        <type>triangle</type>
-        <strokeColor>black</strokeColor>
+        <fill>blue</fill>
+        <stroke>black</stroke>
+        <dimension2>280</dimension2>
     </shape>
      
 </shapes>
