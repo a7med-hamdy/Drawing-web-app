@@ -17,6 +17,7 @@ class line extends shape{
     @Override
     public void setColor(String fill) {
         this.stroke=fill;
+        this.fill=fill;
         
     }
     @Override
