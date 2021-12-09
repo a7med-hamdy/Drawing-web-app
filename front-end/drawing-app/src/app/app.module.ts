@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { CanvasComponent } from './canvas/canvas.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { CanvasComponent } from './canvas/canvas.component';
   imports: [
     BrowserModule,
     KonvaModule,
-    HttpClientModule
+    HttpClientModule,
+    InfiniteScrollModule
   ],
   providers: [],
   bootstrap: [AppComponent]
