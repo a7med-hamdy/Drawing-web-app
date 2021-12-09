@@ -35,7 +35,7 @@
 <section>
   <div id="container"></div>
 </section>
-
+<body>
 
   <div  [style.display]="load ? 'block' : 'none'" class="input">
   <input type="file" (click)="state(1)" name="file" accept="text/xml , application/JSON" (change)="CanvasManager.Uploadfile($event)"  />
@@ -49,3 +49,4 @@
 <div  [style.display]="isSpecial ? 'block' : 'none'" class="uplo">
 
 </div>
+</body>

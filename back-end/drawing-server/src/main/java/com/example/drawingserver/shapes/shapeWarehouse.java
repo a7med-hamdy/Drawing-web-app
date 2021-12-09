@@ -47,12 +47,12 @@ public class shapeWarehouse {
         this.shapes.remove(index);
     }
     
-    public shapeInterface copyShape(int id) throws CloneNotSupportedException
+    public shapeInterface copyShape(int id ,int x,int y) throws CloneNotSupportedException
     {
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
         int index = getShapeIndex(id);
-        shapeInterface s = this.shapes.get(index).clone();
+        shapeInterface s = this.shapes.get(index).clone( x , y);
         this.shapes.add(s);
         return s;
     }
@@ -80,12 +80,14 @@ public class shapeWarehouse {
     }
 
     public void changeSize(int id, int x, int y ,int pos1 , int pos2)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException
-    {
+    {   
+        
         this.undo.push(cloneArrayList(this.shapes));
         this.redo.clear();
         int index = getShapeIndex(id);
         this.shapes.get(index).setDimensions(x, y);
         this.shapes.get(index).setPostion(pos1, pos2);
+        
     }
 
     public void changeLocation(int id, int x, int y)throws ArrayIndexOutOfBoundsException, CloneNotSupportedException

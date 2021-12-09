@@ -84,7 +84,7 @@ class shape implements Cloneable,shapeInterface{
     }
 
     @Override
-    public shapeInterface clone() throws CloneNotSupportedException {
+    public shapeInterface clone(int x,int y) throws CloneNotSupportedException {
 
         int min=1,max=1000000000;
         int rand=(int)Math.floor(Math.random()*(max-min+1)+min);
@@ -93,8 +93,8 @@ class shape implements Cloneable,shapeInterface{
 
         a.type=this.type;
         a.id=rand;
-        a.x=this.x;
-        a.y=this.y;
+        a.x=x;
+        a.y=y;
         a.dimension1=this.dimension1;
         a.dimension2=this.dimension2;
         a.fill=this.fill;
