@@ -2,8 +2,8 @@
   <div class="operations">
     <button title="copy"(click) = "CanvasManager.copyShape()"><div class = "button-text">⧉</div></button>
     <button title="delete" (click) = "CanvasManager.deleteShape()" ><div class = "button-text">🗑</div></button>
-    <button title="save" class="save">🖬</button>
-    <button title="load" class="load">load</button>
+    <button title="save" (click)="state(2)" class="save">🖬</button>
+    <button title="load" (click)="state(1)" class="load">load</button>
     <button title="undo" (click) = "CanvasManager.undo()" >⟲</button>
     <button title="redo" (click)="CanvasManager.redo()">⟳</button>
   </div>
@@ -37,15 +37,15 @@
 </section>
 
 
-  <div>
-  <input type="file"  name="file" accept="text/xml , application/JSON" (change)="selectFile($event)" />
-
-    </div>
-  <div class="download">
-    <a href="http://localhost:8080/file/save/Xml" download>zeft xml</a>
-    <a href="http://localhost:8080/file/save/JSON" download>zeft Json</a>
+  <div  [style.display]="load ? 'block' : 'none'" class="input">
+  <input type="file" (click)="state(1)" name="file" accept="text/xml , application/JSON" (change)="selectFile($event)" />
+</div>
+   <!-- <button style="background-color: aqua;" (click)="onclick()">ay haga</button>-->
+  <div class="download" [style.display]="save ? 'block' : 'none'">
+   <button (click)="state(2)"> <a href="http://localhost:8080/file/save/Xml"  download>downlaod xml</a></button>
+  <button (click)="state(2)"><a href="http://localhost:8080/file/save/JSON"  download>downlaod Json</a></button>
   </div>
 
-<div class="uplo">
+<div  [style.display]="isSpecial ? 'block' : 'none'" class="uplo">
 
 </div>

@@ -94,11 +94,11 @@ public class fileRequestsController {
                 .body(resource);
     }
     
-    @PostMapping("/load")
-    public String loadReq(@RequestParam("file") MultipartFile file) throws IOException{
-        String content = new String(file.getBytes());
-        String jsonString = "";
-        if(file.getContentType().equalsIgnoreCase("application/xml"))
+    @PostMapping("/load/{zeft}")
+    public String loadReq(@PathVariable String zeft) throws IOException{
+        /*String content = new String(file.getBytes());*/
+        String jsonString = zeft;
+       /* if(file.getContentType().equalsIgnoreCase("application/xml"))
         {
             try {  
                 JSONObject json = XML.toJSONObject(content);   
@@ -110,8 +110,8 @@ public class fileRequestsController {
                 
             }
         } 
-        updateList(content);
-        return content;
+        updateList(content);*/
+        return jsonString;
     }
 
     private void updateList(String content){

@@ -88,9 +88,9 @@ export class RequestsService {
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  upload(file: string): Observable<HttpEvent<any>> {
+  upload(file: string): Observable<any> {
     const body={title :file}
-    let url = this.URL + `/file/load`;
-    return this.http.post<any>(url, body)
+    let url = this.URL + `/file/load/`;
+    return this.http.get(url+"anything",{headers: this.reqHeader , responseType: 'text'})
   }
 }

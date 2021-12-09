@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CanvasManagerService } from './canvas-manager.service';
 import {  RequestsService  } from './requests.service';
 import { Shape } from '../Shape';
-import { Observable } from 'rxjs';
+import { Observable, Subscriber } from 'rxjs';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 @Component({
   selector: 'app-canvas',
@@ -18,7 +18,9 @@ export class CanvasComponent implements OnInit {
   constructor(public req: RequestsService) { }
   shape!: any;
   shapes!: Shape[];
-
+  isSpecial : boolean=false;
+  load : boolean=false;
+  save : boolean=false;
   selectedFiles?: File;
 
   message = '';
@@ -40,10 +42,31 @@ export class CanvasComponent implements OnInit {
       console.log(reader.result);
       let x = reader.result as string;
       /*put your logic herer */
+
    };
     reader.readAsText(event.target.files[0])
   }
+  onclick():void{
+  this.req.upload("zeft").subscribe(
+    (data:any)=>{
+      console.log(data);
+    }
+  )
+  }
 
-
-
+  state(num:number){
+    if(this.isSpecial){
+      this.isSpecial=false;
+      this.load=false;
+      this.save=false;
+    }else{
+      this.isSpecial=true;
+      if(num==1){
+        this.load=true;
+      }
+      else{
+        this.save=true
+      }
+    }
+  }
 }
