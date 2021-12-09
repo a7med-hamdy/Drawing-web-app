@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE shapes SYSTEM "">
+<shapes>
+    <shape>
+        <strokeWidth>4</strokeWidth>
+        <color>blue</color>
+        <postion>527</postion>
+        <postion>247</postion>
+        <values>70</values>
+        <values>70</values>
+        <id>247999005</id>
+        <type>square</type>
+        <strokeColor>black</strokeColor>
+    </shape>
+    <shape>
+        <strokeWidth>4</strokeWidth>
+        <color>blue</color>
+        <postion>715</postion>
+        <postion>275</postion>
+        <values>80</values>
+        <values>80</values>
+        <id>775467687</id>
+        <type>triangle</type>
+        <strokeColor>black</strokeColor>
+    </shape>
+     
+</shapes>

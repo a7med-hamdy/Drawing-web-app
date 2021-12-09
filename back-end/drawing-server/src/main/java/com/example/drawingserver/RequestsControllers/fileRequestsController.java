@@ -25,6 +25,8 @@ import org.json.XML;
 import com.example.drawingserver.shapes.DeserializationAdapter;
 import com.example.drawingserver.shapes.shapeInterface;
 import com.example.drawingserver.shapes.shapeWarehouse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -32,7 +34,6 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @CrossOrigin
@@ -110,11 +111,11 @@ public class fileRequestsController {
                 
             }
         } 
-        updateList(content);
-        return jsonString;
+        String s = updateList(content);
+        return s;
     }
 
-    private void updateList(String content){
+    private String updateList(String content) throws JsonProcessingException{
         GsonBuilder builder = new GsonBuilder(); 
         builder.registerTypeAdapter(shapeInterface.class, new DeserializationAdapter());  
         Gson g = builder.create();
@@ -125,5 +126,25 @@ public class fileRequestsController {
             list.add(s);
         }
         this.warehouse.setList(list);
+        return jsonList(this.warehouse.getList());
+    }
+
+    private String jsonList(ArrayList<shapeInterface> list) throws JsonProcessingException
+    {
+        ObjectMapper map = new ObjectMapper();
+        String json = "[";
+        for(shapeInterface shape : list)
+        {
+            String s = map.writeValueAsString(shape);
+            json = json + s + ", ";
+        }
+        try{
+            json = json.substring(0, json.length()-2) + "]";
+        }
+        catch(StringIndexOutOfBoundsException e)
+        {
+            return "[]";
+        }
+        return json;
     }
 }
