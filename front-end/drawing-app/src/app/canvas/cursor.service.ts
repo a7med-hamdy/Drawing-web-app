@@ -175,13 +175,31 @@ export class CursorService {
           e.target.on('transformend', function(){
             id = e.target.getAttr('id');
             var olddate = Date.now();
+            if (e.target instanceof Konva.RegularPolygon || e.target instanceof Konva.Circle){
+              e.target.setAttrs({
+                radius:Math.trunc(e.target.radius() * e.target.scaleX()),
+                scaleX: 1,
+                scaleY: 1,
+              });
+              changesdim.push([e.target.radius(),e.target.radius()]);
+            }
+            else if(e.target instanceof Konva.Ellipse){
+              e.target.setAttrs({
+                radiusX:Math.trunc(e.target.radiusX() * e.target.scaleX()),
+                radiusY:Math.trunc(e.target.radiusY() * e.target.scaleY()),
+                scaleX: 1,
+                scaleY: 1,
+              });
+              changesdim.push([e.target.radiusX(),e.target.radiusY()]);
+            }
+            else{
             e.target.setAttrs({
               width:  Math.trunc(e.target.width() * e.target.scaleX()),
               height: Math.trunc(e.target.height() * e.target.scaleY()),
               scaleX: 1,
               scaleY: 1,
             });
-            changesdim.push([e.target.width(),e.target.height()]);
+          }
             changespos.push([e.target.x(), e.target.y()]);
             if(Math.abs(Date.now()- olddate) != 0){
               component.sendResize(changespos[changespos.length-1][0],changespos[changespos.length-1][1],changesdim[changesdim.length-1][0],changesdim[changesdim.length-1][1], id);
