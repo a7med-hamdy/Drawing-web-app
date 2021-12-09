@@ -146,7 +146,6 @@ export class CanvasManagerService {
     this.Cursor.emptySelection();
     this.req.undoRequest()
     .subscribe(data =>{
-        if(data.length == this.shapes.length){
           this.layer.removeChildren();
           this.shapes = [];
           for(var i = 0; i < data.length; i++){
@@ -154,15 +153,6 @@ export class CanvasManagerService {
               this.addShape(newShape);
           }
           this.layer.add(this.Cursor.transformer);
-        }
-        if(data.length < this.shapes.length){
-          var deletedShape = this.shapes.pop();
-          deletedShape.destroy();
-        }
-        if(data.length > this.shapes.length){
-          var addedShape = this.ShapeTranslator.translateToKonva(data[data.length-1]);
-          this.addShape(addedShape);
-        }
           console.log("return: \n"+data);
           console.log(`UNDO action:\n` + JSON.stringify(data))
     });
@@ -173,7 +163,6 @@ export class CanvasManagerService {
     this.Cursor.emptySelection();
     this.req.redoRequest()
      .subscribe(data =>{
-        if(data.length == this.shapes.length){
           this.layer.removeChildren();
           this.shapes = [];
           for(var i = 0; i < data.length; i++){
@@ -181,15 +170,6 @@ export class CanvasManagerService {
               this.addShape(newShape);
           }
           this.layer.add(this.Cursor.transformer);
-        }
-        if(data.length < this.shapes.length){
-          var deletedShape = this.shapes.pop();
-          deletedShape.destroy();
-        }
-        if(data.length > this.shapes.length){
-          var addedShape = this.ShapeTranslator.translateToKonva(data[data.length-1]);
-          this.addShape(addedShape);
-        }
         console.log(`REDO action:\n` + JSON.stringify(data))
       });
   }
