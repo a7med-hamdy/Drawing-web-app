@@ -165,8 +165,6 @@ export class CanvasManagerService {
         }
           console.log("return: \n"+data);
           console.log(`UNDO action:\n` + JSON.stringify(data))
-
-
     });
   }
 
@@ -174,9 +172,7 @@ export class CanvasManagerService {
   public redo(){
     this.Cursor.emptySelection();
     this.req.redoRequest()
-     .subscribe(data =>
-      {
-
+     .subscribe(data =>{
         if(data.length == this.shapes.length){
           this.layer.removeChildren();
           this.shapes = [];
@@ -196,7 +192,6 @@ export class CanvasManagerService {
         }
         console.log(`REDO action:\n` + JSON.stringify(data))
       });
-
   }
 
 public Uploadfile(event: any):void{
@@ -209,7 +204,7 @@ public Uploadfile(event: any):void{
       {
         console.log(data[0])
         if(data.length == 0){return;}
-        this.layer.destroyChildren();
+        this.layer.removeChildren();
         this.shapes = [];
         for(var i = 0; i < data.length; i++){
           var newShape = this.ShapeTranslator.translateToKonva(data[i]);
@@ -217,6 +212,7 @@ public Uploadfile(event: any):void{
         }
         if(this.Cursor.selectedShape != null)
           this.Cursor.emptySelection();
+        this.layer.add(this.Cursor.transformer);
       });
  };
   reader.readAsText(event.target.files[0])

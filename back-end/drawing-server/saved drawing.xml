@@ -3,25 +3,36 @@
 <shapes>
     <shape>
         <strokeWidth>4</strokeWidth>
-        <color>blue</color>
-        <postion>527</postion>
-        <postion>247</postion>
-        <values>70</values>
-        <values>70</values>
-        <id>247999005</id>
+        <x>503</x>
+        <y>100</y>
+        <dimension1>70</dimension1>
+        <id>369232536</id>
         <type>square</type>
-        <strokeColor>black</strokeColor>
+        <fill>blue</fill>
+        <stroke>black</stroke>
+        <dimension2>70</dimension2>
     </shape>
     <shape>
         <strokeWidth>4</strokeWidth>
-        <color>blue</color>
-        <postion>715</postion>
-        <postion>275</postion>
-        <values>80</values>
-        <values>80</values>
-        <id>775467687</id>
+        <x>310</x>
+        <y>256</y>
+        <dimension1>80</dimension1>
+        <id>996451516</id>
         <type>triangle</type>
-        <strokeColor>black</strokeColor>
+        <fill>blue</fill>
+        <stroke>black</stroke>
+        <dimension2>80</dimension2>
+    </shape>
+    <shape>
+        <strokeWidth>4</strokeWidth>
+        <x>697</x>
+        <y>300</y>
+        <dimension1>70</dimension1>
+        <id>443453904</id>
+        <type>circle</type>
+        <fill>blue</fill>
+        <stroke>black</stroke>
+        <dimension2>70</dimension2>
     </shape>
      
 </shapes>
