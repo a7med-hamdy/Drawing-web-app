@@ -1,7 +1,7 @@
 <header>
   <div class="operations">
-    <button title="copy"(click) = "CanvasManager.copyShape()">⧉</button>
-    <button title="delete" (click) = "CanvasManager.deleteShape()" >🗑</button>
+    <button title="copy"(click) = "CanvasManager.copyShape()"><div class = "button-text">⧉</div></button>
+    <button title="delete" (click) = "CanvasManager.deleteShape()" ><div class = "button-text">🗑</div></button>
     <button title="save" class="save">🖬</button>
     <button title="load" class="load">load</button>
     <button title="undo" (click) = "CanvasManager.undo()" >⟲</button>
@@ -9,7 +9,7 @@
   </div>
 
   <div class="shapes">
-  <button title="create square" (click) = "CanvasManager.createShape('square')" >⬜</button>
+  <button title="create square" (click) = "CanvasManager.createShape('square')" ><div class = "button-text">⬜</div></button>
   <button title="create triangle" (click) = "CanvasManager.createShape('triangle')">△</button>
   <button title="create circle" (click) = "CanvasManager.createShape('circle')">⬤</button>
   <button title="create ellipse" (click) = "CanvasManager.createShape('ellipse')">⬯</button>
