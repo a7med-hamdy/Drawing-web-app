@@ -19,8 +19,7 @@ export class CanvasComponent implements OnInit {
   shape!: any;
   shapes!: Shape[];
 
-  selectedFiles?: FileList;
-  currentFile?: File;
+  selectedFiles?: File;
 
   message = '';
   fileInfos?: Observable<any>;
@@ -30,39 +29,21 @@ export class CanvasComponent implements OnInit {
     this.CanvasManager = new CanvasManagerService(this.stage, this.layer, this.req);
     this.CanvasManager.refresh();
   }
+
+  ////////////////////////////////////////////////
+  /*req is the service name*/
     /*selected*/
   selectFile(event: any): void {
-    this.selectedFiles = event.target.files;
+    this.selectedFiles = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = (e) => {
+      console.log(reader.result);
+      let x = reader.result as string;
+      /*put your logic herer */
+   };
+    reader.readAsText(event.target.files[0])
   }
 
-  /////////////////////////////////
-  upload(): void {
 
 
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
-
-      if (file) {
-        this.currentFile = file;
-
-        this.req.upload(this.currentFile).subscribe(
-          (data) => {
-            console.log(data);
-          },
-          (err: any) => {
-            console.log(err);
-            if (err.error && err.error.message) {
-              this.message = err.error.message;
-            } else {
-              this.message = 'Could not upload the file!';
-            }
-
-            this.currentFile = undefined;
-          });
-
-      }
-
-      this.selectedFiles = undefined;
-    }
-  }
 }
