@@ -32,28 +32,6 @@ export class CanvasComponent implements OnInit {
     this.CanvasManager.refresh();
   }
 
-  ////////////////////////////////////////////////
-  /*req is the service name*/
-    /*selected*/
-  selectFile(event: any): void {
-    this.selectedFiles = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = (e) => {
-      console.log(reader.result);
-      let x = reader.result as string;
-      /*put your logic herer */
-
-   };
-    reader.readAsText(event.target.files[0])
-  }
-  onclick():void{
-  this.req.upload("zeft").subscribe(
-    (data:any)=>{
-      console.log(data);
-    }
-  )
-  }
-
   state(num:number){
     if(this.isSpecial){
       this.isSpecial=false;

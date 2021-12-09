@@ -52,7 +52,7 @@ public class fileRequestsController {
         StringWriter stringWriter = new StringWriter();
         StreamResult streamResult = new StreamResult(stringWriter);
         String string = "";
-        String filename = "saved drawing" + Math.random()*20000;
+        String filename = "saved drawing";
         String mediatype = "";
         String element = this.gson.toJson(this.warehouse.getList(),new TypeToken<ArrayList<shapeInterface>>() {}.getType()); 
         JSONArray list = new JSONArray(element);
@@ -94,11 +94,11 @@ public class fileRequestsController {
                 .body(resource);
     }
     
-    @PostMapping("/load/{zeft}")
-    public String loadReq(@PathVariable String zeft) throws IOException{
-        /*String content = new String(file.getBytes());*/
-        String jsonString = zeft;
-       /* if(file.getContentType().equalsIgnoreCase("application/xml"))
+    @PostMapping("/load")
+    public String loadReq(@RequestParam("file") String file, @RequestParam("type") String type) throws IOException{
+        String content = new String(file.getBytes());
+        String jsonString = "";
+        if(type.equalsIgnoreCase("text/xml"))
         {
             try {  
                 JSONObject json = XML.toJSONObject(content);   
@@ -110,7 +110,7 @@ public class fileRequestsController {
                 
             }
         } 
-        updateList(content);*/
+        updateList(content);
         return jsonString;
     }
 

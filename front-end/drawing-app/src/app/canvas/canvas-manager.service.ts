@@ -16,6 +16,7 @@ export class CanvasManagerService {
   Cursor!:CursorService;
   ShapeTranslator:ShapeTranslatorService = new ShapeTranslatorService();
   shape!: any;
+  selectedFiles?: File;
 
   constructor(stg:Konva.Stage, lyer:Konva.Layer, public req:RequestsService) {
     this.stage = stg;
@@ -47,7 +48,6 @@ export class CanvasManagerService {
   }
 
    public refresh():void{
-     this.requestData();
     this.stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
@@ -61,6 +61,8 @@ export class CanvasManagerService {
     this.Cursor.CursorShapeSelectionListener(this.shapes, this.layer);
     this.Cursor.CursorTransformationListener();
     this.Cursor.CursorDraggerListener();
+    this.requestData();
+
   }
 ///////////////////////////////////////////////////////////////////////
 
@@ -194,4 +196,24 @@ export class CanvasManagerService {
       });
 
   }
+
+  public Uploadfile(event: any):void{
+    this.Cursor.emptySelection();
+    this.selectedFiles = event.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = (e) => {
+      let x = reader.result as string;
+      this.req.upload(x, <string>this.selectedFiles?.type)
+      .subscribe(data =>{
+        if(data.length == 0){return;}
+        this.layer.destroyChildren();
+        this.shapes = [];
+        for(var i = 0; i < data.length; i++){
+          var newShape = this.ShapeTranslator.translateToKonva(data[i]);
+          this.addShape(newShape);
+      }
+      });
+    reader.readAsText(event.target.files[0])
+  }
+}
 }

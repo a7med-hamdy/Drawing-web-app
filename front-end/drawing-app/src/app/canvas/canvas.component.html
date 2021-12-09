@@ -38,7 +38,7 @@
 
 
   <div  [style.display]="load ? 'block' : 'none'" class="input">
-  <input type="file" (click)="state(1)" name="file" accept="text/xml , application/JSON" (change)="selectFile($event)" />
+  <input type="file" (click)="state(1)" name="file" accept="text/xml , application/JSON" (change)="CanvasManager.Uploadfile($event)"  />
 </div>
    <!-- <button style="background-color: aqua;" (click)="onclick()">ay haga</button>-->
   <div class="download" [style.display]="save ? 'block' : 'none'">
