@@ -32,12 +32,16 @@ export class CanvasManagerService {
   public requestData():void{
     this.req.refreshRequest()
     .subscribe(data =>{
-      for(var i = 0; i < data.length; i++){
-        var oldshape = this.shapes.pop();
-        oldshape.destroy();
-        var newShape = this.ShapeTranslator.translateToKonva(data[i]);
-        this.addShape(newShape);
-    }
+      console.log(data);
+      if (data.length === 0 ){
+        return;
+      }
+      else{
+        for(var i = 0; i < data.length; i++){
+            var newShape = this.ShapeTranslator.translateToKonva(data[i]);
+            this.addShape(newShape);
+        }
+      }
     console.log(data);
     })
   }

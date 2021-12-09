@@ -27,9 +27,9 @@ export class RequestsService {
       );
   }
   refreshRequest(): Observable<any>{
-    console.log("undoRequest!!")
+    console.log("FetchRequest!!")
     let url = this.URL + `/edit/data`;
-    return this.http.post<any>(url, { 'content-type': 'application/json'})
+    return this.http.get<any>(url, {headers: this.reqHeader})
   }
 
   /////////////////////////////////////////////////////////////////////////////
