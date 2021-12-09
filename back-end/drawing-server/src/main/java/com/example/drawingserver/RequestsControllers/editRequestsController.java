@@ -105,8 +105,8 @@ public class editRequestsController{
     @PostMapping("/{id}/copy:{x},{y}")
     public String copyReq(@PathVariable int id, @PathVariable int x, @PathVariable int y) throws CloneNotSupportedException, JsonProcessingException{
         System.out.println(id + "\tcopy");
-        shapeInterface s = this.warehouse.copyShape(id);
-        s.setPostion(x, y);
+        shapeInterface s = this.warehouse.copyShape(id,x,y);
+        
         return map.writeValueAsString(s);
     }
 

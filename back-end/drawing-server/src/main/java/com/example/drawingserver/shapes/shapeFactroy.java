@@ -11,7 +11,7 @@ public class shapeFactroy {
         }
 
         if(shape.equalsIgnoreCase("line")){
-            return new line(x,posX,posY,200,200,"blue",4);
+            return new line(x,posX,posY,posX+100,posY+100,"blue",4);
         }
 
         if(shape.equalsIgnoreCase("ellipse")){

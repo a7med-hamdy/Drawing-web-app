@@ -29,6 +29,6 @@ public interface shapeInterface {
 
     String getType();
 
-    shapeInterface clone() throws CloneNotSupportedException;
+    shapeInterface clone(int x, int y) throws CloneNotSupportedException;
     
 }

@@ -19,5 +19,25 @@ class line extends shape{
         this.stroke=fill;
         
     }
+    @Override
+    public shapeInterface clone(int x,int y) throws CloneNotSupportedException {
+
+        int min=1,max=1000000000;
+        int rand=(int)Math.floor(Math.random()*(max-min+1)+min);
+
+        shape a=new shape();
+        
+        a.type=this.type;
+        a.id=rand;
+        a.x=x;
+        a.y=y;
+        a.dimension1=x+(this.x-this.dimension1);
+        a.dimension2=y+(this.y-this.dimension2);
+        a.fill=this.fill;
+        a.stroke=this.stroke;
+        a.strokeWidth=this.strokeWidth;
+
+        return a;
+    }
 
 }
