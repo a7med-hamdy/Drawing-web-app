@@ -203,7 +203,7 @@ public Uploadfile(event: any):void{
   reader.onloadend = (e) => {
     let x = reader.result as string;
     this.req.upload(x, <string>this.selectedFiles?.type)
-    .subscribe(data => 
+    .subscribe(data =>
       {
         console.log(data[0])
         if(data.length == 0){return;}
@@ -213,7 +213,8 @@ public Uploadfile(event: any):void{
           var newShape = this.ShapeTranslator.translateToKonva(data[i]);
           this.addShape(newShape);
         }
-        this.Cursor.emptySelection();
+        if(this.Cursor.selectedShape != null)
+          this.Cursor.emptySelection();
       });
  };
   reader.readAsText(event.target.files[0])
