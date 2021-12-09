@@ -34,7 +34,7 @@ button:hover{
   height: 45px;
   margin: 2px;
   font-size: 27.5px;
-  background-color: rgba(238, 238, 238, 0.651);
+  background-color: rgb(238, 238, 238);
   border-radius: 50%;
   padding: 30px;
 
