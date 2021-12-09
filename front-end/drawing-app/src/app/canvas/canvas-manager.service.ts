@@ -48,7 +48,6 @@ export class CanvasManagerService {
   }
 
    public refresh():void{
-     this.requestData();
     this.stage = new Konva.Stage({
       container: 'container',
       width: window.innerWidth,
@@ -62,6 +61,8 @@ export class CanvasManagerService {
     this.Cursor.CursorShapeSelectionListener(this.shapes, this.layer);
     this.Cursor.CursorTransformationListener();
     this.Cursor.CursorDraggerListener();
+    this.requestData();
+
   }
 ///////////////////////////////////////////////////////////////////////
 
