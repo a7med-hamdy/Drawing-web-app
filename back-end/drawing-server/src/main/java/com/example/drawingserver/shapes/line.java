@@ -31,4 +31,18 @@ class line extends shape{
         return a;
     }
 
+    @Override
+    public shapeInterface copy(){
+        
+        line a=new line( this.id,
+        this.x,
+        this.y,
+        this.dimension1,
+        this.dimension2,
+        this.fill,
+        this.strokeWidth);
+        
+        return a;
+    }
+
 }
