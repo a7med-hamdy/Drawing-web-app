@@ -14,7 +14,7 @@ public class logging {
     @Before("execution(* com.example.drawingserver.RequestsControllers.*.*(..)) && args(..)")
     public void beforeAdvice(JoinPoint joinPoint){
         int x=0;
-        System.out.println("argument before enter the methode");
+        System.out.println("argument before enter the method");
         x++;
         Object[] signatureArgs = joinPoint.getArgs();
         for (Object signatureArg: signatureArgs) {
