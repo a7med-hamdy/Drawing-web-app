@@ -3,13 +3,11 @@ package com.example.drawingserver.RequestsControllers;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
-
 import com.example.drawingserver.shapes.shapeFactroy;
 import com.example.drawingserver.shapes.shapeInterface;
 import com.example.drawingserver.shapes.shapeWarehouse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,14 +54,27 @@ public class editRequestsController{
     }
 
 
-
+    /**
+     * handle fetch shapes request
+     * @return
+     * array of shapes as json
+     * @throws JsonProcessingException
+     */
     @GetMapping("/data")
     public String fetchData() throws JsonProcessingException{
         ArrayList<shapeInterface> list =  this.warehouse.getList();
         String json = jsonList(list);
         return json;
     }
-    // changing the color of the shape
+    /**
+     * 
+     * @param id
+     * the shape to be changed
+     * @param color
+     * the new color
+     * @return
+     * success or fail depending on the operation's success
+     */
     @GetMapping("/{id}/color:{color}")
     public String setColor(@PathVariable int id, @PathVariable String color){
         System.out.println(id + "\t" + color);
@@ -78,7 +89,21 @@ public class editRequestsController{
         return "success";
     }
 
-    // resizing the shape
+    /**
+     * handle resize request
+     * @param id
+     * the shape to be changed
+     * @param v1
+     * the new first dimension
+     * @param v2
+     * the new second dimension
+     * @param x
+     * the new x position
+     * @param y
+     * the new y position
+     * @return
+     * success or fail depending on the operation's success
+     */
     @GetMapping("/{id}/resize:{v1},{v2}/pos:{x},{y}")
     public String resizeReq(@PathVariable int id, @PathVariable int v1, @PathVariable int v2 , @PathVariable int x, @PathVariable int y){
         try{
@@ -90,7 +115,17 @@ public class editRequestsController{
         return "success";
     }
 
-    // moving the shape
+    /**
+     * handle move request
+     * @param id
+     * the shape to be changed
+     * @param x
+     * the new x position
+     * @param y
+     * the new y position
+     * @return
+     * success or fail depending on the operation's success
+     */
     @GetMapping("/{id}/move:{x},{y}")
     public String moveReq(@PathVariable int id, @PathVariable int x, @PathVariable int y){   
         try{
@@ -102,7 +137,19 @@ public class editRequestsController{
         return "success";
     }
 
-    // copying the shape will create an object waiting to be pasted
+    /**
+     * handle copy request
+     * @param id
+     * the shape to be changed
+     * @param x
+     * the x position of the clone
+     * @param y
+     * the y position of the clone
+     * @return
+     * the cloned object as json
+     * @throws CloneNotSupportedException
+     * @throws JsonProcessingException
+     */
     @PostMapping("/{id}/copy:{x},{y}")
     public String copyReq(@PathVariable int id, @PathVariable int x, @PathVariable int y) throws CloneNotSupportedException, JsonProcessingException{
         System.out.println(id + "\tcopy");
@@ -111,7 +158,13 @@ public class editRequestsController{
         return map.writeValueAsString(s);
     }
 
-    // delete the shape from the shapes list
+    /**
+     * 
+     * @param id
+     * the shape to be changed
+     * @return
+     * success or fail depending on the operation's success
+     */
     @GetMapping("/{id}/delete")
     public String deleteReq(@PathVariable int id){   
         try{
@@ -123,6 +176,11 @@ public class editRequestsController{
         return "success";
     }
 
+    /**
+     * hanlde undo request
+     * @return
+     * the array of shapes after the undo as json
+     */
     @PostMapping("/undo")
     public String undoReq() 
     {
@@ -138,6 +196,11 @@ public class editRequestsController{
         return json;
     }
 
+    /**
+     * handle redo request
+     * @return
+     * array of shapes after redo as json
+     */
     @PostMapping("/redo")
     public String redoReq()
     {
@@ -153,6 +216,14 @@ public class editRequestsController{
         return json;
     }
 
+    /**
+     * halper method to convert java array lists to json
+     * @param list
+     * the list to be converted
+     * @return
+     * the list as json
+     * @throws JsonProcessingException
+     */
     private String jsonList(ArrayList<shapeInterface> list) throws JsonProcessingException
     {
         String json = "[";
