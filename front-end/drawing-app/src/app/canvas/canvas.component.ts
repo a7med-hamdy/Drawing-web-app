@@ -16,8 +16,6 @@ export class CanvasComponent implements OnInit {
   CanvasManager!:CanvasManagerService;
 
   constructor(public req: RequestsService) { }
-  shape!: any;
-  shapes!: Shape[];
   isSpecial : boolean=false;
   load : boolean=false;
   save : boolean=false;
@@ -28,7 +26,9 @@ export class CanvasComponent implements OnInit {
 
 
   ngOnInit(): void {
+    //create the manager on the start of the application
     this.CanvasManager = new CanvasManagerService(this.stage, this.layer, this.req);
+    //update the manager's listeners on any new changes
     this.CanvasManager.refresh();
   }
 

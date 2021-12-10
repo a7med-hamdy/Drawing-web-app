@@ -2,8 +2,8 @@
   <div class="operations">
     <button title="copy"(click) = "CanvasManager.copyShape()"><div class = "button-text">⧉</div></button>
     <button title="delete" (click) = "CanvasManager.deleteShape()" ><div class = "button-text">🗑</div></button>
-    <button title="save" (click)="state(2)" class="save">🖬</button>
-    <button title="load" (click)="state(1)" class="load">load</button>
+    <button title="save" (click)="state(2)" class="save">📥</button>
+    <button title="load" (click)="state(1)" class="load">📤</button>
     <button title="undo" (click) = "CanvasManager.undo()" >⟲</button>
     <button title="redo" (click)="CanvasManager.redo()">⟳</button>
   </div>
@@ -40,10 +40,11 @@
   <div  [style.display]="load ? 'block' : 'none'" class="input">
   <input type="file" (click)="state(1)" name="file" accept="text/xml , application/JSON" (change)="CanvasManager.Uploadfile($event)"  />
 </div>
-   <!-- <button style="background-color: aqua;" (click)="onclick()">ay haga</button>-->
-  <div class="download" [style.display]="save ? 'block' : 'none'">
-   <button (click)="state(2)"> <a href="http://localhost:8080/file/save/Xml"  download>downlaod xml</a></button>
-  <button (click)="state(2)"><a href="http://localhost:8080/file/save/JSON"  download>downlaod Json</a></button>
+
+  <div class = "input" [style.display]="save ? 'block' : 'none'">
+    <button (click)="state(2)" class="out2">🞮</button>
+  <button class = "downloadbut" (click)="state(2)"> <a href="http://localhost:8080/file/save/Xml"  download>as .xml</a></button>
+  <button class = "downloadbut" (click)="state(2)"><a href="http://localhost:8080/file/save/JSON"  download>as .json</a></button>
   </div>
 
 <div  [style.display]="isSpecial ? 'block' : 'none'" class="uplo">

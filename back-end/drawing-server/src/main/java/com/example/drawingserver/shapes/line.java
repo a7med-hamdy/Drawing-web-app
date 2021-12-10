@@ -1,6 +1,6 @@
 package com.example.drawingserver.shapes;
 
-class line extends shape implements isLine{
+class line extends shape{
     
     line(int id,int x ,int y,int endX,int endY,String stroke,int strokeWidth){
         this.type="line";

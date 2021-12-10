@@ -25,15 +25,25 @@ public class editRequestsController{
 
     private shapeFactroy factory;
     private shapeWarehouse warehouse;
-    private ObjectMapper map;
+    private ObjectMapper map;//an object that maps java objects to json
 
     public editRequestsController(){
         this.warehouse = shapeWarehouse.getInstanceOf();
         this.factory = new shapeFactroy();
         this.map = new ObjectMapper();
     }
-    // clicking on a shape from the provided shapes to create it
-    // (waiting for clicking on the board to insert the object)
+    /**
+     * handle create requests
+     * @param shape
+     * string of teh shape to be created
+     * @param x
+     * x position of the shape
+     * @param y
+     * y position of the shape
+     * @return
+     * the json represntation of the object
+     * @throws JsonProcessingException
+     */
     @PostMapping("/create:{shape}:{x},{y}")
     public String createShape(@PathVariable String shape, @PathVariable int x, @PathVariable int y) throws JsonProcessingException{
         shapeInterface s = this.factory.factorShape(shape,x,y);
@@ -42,18 +52,9 @@ public class editRequestsController{
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        System.out.println(map.writeValueAsString(s));
         return map.writeValueAsString(s);
     }
 
-
-    // (clicking on the board to show the shape selected || paste the copied shape)
-    // & insert it to the shapes object
-    @PostMapping(value = {"/draw:{shape}", "/paste:{shape}"})
-    public String addDrawing(@PathVariable String shape){
-        
-        return shape + " drawn";
-    }
 
 
     @GetMapping("/data")
