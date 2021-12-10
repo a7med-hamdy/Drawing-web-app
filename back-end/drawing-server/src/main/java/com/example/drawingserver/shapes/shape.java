@@ -95,8 +95,13 @@ class shape implements Cloneable,shapeInterface{
         a.id=rand;
         a.x=x;
         a.y=y;
+        if(a instanceof isLine){
+            a.dimension1=x+(this.x-this.dimension1);
+            a.dimension2=y+(this.y-this.dimension2);
+        }else{
         a.dimension1=this.dimension1;
         a.dimension2=this.dimension2;
+        }
         a.fill=this.fill;
         a.stroke=this.stroke;
         a.strokeWidth=this.strokeWidth;
