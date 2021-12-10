@@ -5,8 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import java.util.ArrayList;
@@ -21,7 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
-
 import com.example.drawingserver.shapes.DeserializationAdapter;
 import com.example.drawingserver.shapes.shapeInterface;
 import com.example.drawingserver.shapes.shapeWarehouse;
@@ -30,7 +27,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +42,16 @@ public class fileRequestsController {
         this.warehouse = shapeWarehouse.getInstanceOf();
         this.gson = new Gson();
     }
+    /**
+     * handle save request
+     * @param type
+     * string that indicates the type of the file json or xml
+     * @return
+     * the file to be downloaded
+     * @throws TransformerFactoryConfigurationError
+     * @throws TransformerException
+     * @throws IOException
+     */
     @GetMapping("/save/{type}")
     @ResponseBody
     public ResponseEntity<Object> saveReq(@PathVariable String type) throws TransformerFactoryConfigurationError, TransformerException, IOException{
@@ -59,12 +65,14 @@ public class fileRequestsController {
         JSONArray list = new JSONArray(element);
         if(type.equalsIgnoreCase("json"))
         {
+            //create the json file
             string = list.toString();
             filename = filename + ".json";
             mediatype = "application/json";
         }
         else
         {
+            //create the xml file
             JSONObject json = new JSONObject("{shape:"+list + "}");
             string = XML.toString(json);
             string = "<shapes>" + string + " "+"</shapes>";
@@ -72,7 +80,7 @@ public class fileRequestsController {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "");
-            transformer.setOutputProperty(OutputKeys.ENCODING, "iso-8859-1");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "ISO-8859-1");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
             transformer.transform(new StringSource(string), streamResult);
             string = stringWriter.toString();
@@ -86,15 +94,21 @@ public class fileRequestsController {
         
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
         return ResponseEntity.ok()
-                // Content-Disposition
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
-                // Content-Type
                 .contentType(MediaType.parseMediaType(mediatype))
-                // Contet-Length
                 .contentLength(file.length()) 
                 .body(resource);
     }
-    
+    /**
+     * handle load request
+     * @param file
+     * string of the content of the loaded file
+     * @param type
+     * the type of the file xml or json
+     * @return
+     * json array of the shapes in the file
+     * @throws IOException
+     */
     @PostMapping("/load")
     public String loadReq(@RequestParam("file") String file, @RequestParam("type") String type) throws IOException{
         String content = new String(file.getBytes());
@@ -115,6 +129,14 @@ public class fileRequestsController {
         return s;
     }
 
+    /**
+     * helper method to update the backend with the content of the file
+     * @param content
+     * string content of the file
+     * @return
+     * json array of teh objects after updating the backend
+     * @throws JsonProcessingException
+     */
     private String updateList(String content) throws JsonProcessingException{
         GsonBuilder builder = new GsonBuilder(); 
         builder.registerTypeAdapter(shapeInterface.class, new DeserializationAdapter());  
@@ -129,6 +151,14 @@ public class fileRequestsController {
         return jsonList(this.warehouse.getList());
     }
 
+    /**
+     * helper method to convert java array list to json array
+     * @param list
+     * the list to be converted
+     * @return
+     * json array representation of the objects
+     * @throws JsonProcessingException
+     */
     private String jsonList(ArrayList<shapeInterface> list) throws JsonProcessingException
     {
         ObjectMapper map = new ObjectMapper();
