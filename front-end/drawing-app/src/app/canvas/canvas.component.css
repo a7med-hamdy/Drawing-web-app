@@ -15,6 +15,9 @@ header{
 body{
   background-color: grey;
 }
+#container{
+  background-color: rgb(214, 214, 214);
+}
 button{
 
   font-family:  Calibri, 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
