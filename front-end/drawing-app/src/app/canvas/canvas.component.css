@@ -104,6 +104,9 @@ a{
   text-decoration: none;
   color: black;
 }
+a :hover{
+  color:white;
+}
 .uplo{
   display: none;
   position: absolute;
@@ -125,18 +128,23 @@ a{
   left:650px;
   z-index: 6;
 }
-.download button{
-  width:100px;
-  height: 50px;
+
+.downloadbut{
+  width:150px;
+  height: 100px;
   position: relative;
   top: 100px;
   left: 65px;
   margin: 20px;
-  height: 100px;
-  width: 200px;
-  font-size:  28px;;
-  background-color: rgb(216, 176, 176);
-
+  font-size: 20px;;
+  font-family: Calibri light;
+  border-radius: 16px;
+  color:rgb(85, 2, 2);
+  justify-content: space-evenly;
+  background-color: rgb(245, 245, 245);
+}
+.downloadbut:hover{
+  background-color: #966e6e;
 }
 input{
   width:100px;
@@ -151,6 +159,7 @@ input{
   background-color: rgb(233, 57, 57);
 }
 .input{
+  justify-content: space-evenly;
   width:600px;
   height: 300px;
   position: absolute;
@@ -158,12 +167,15 @@ input{
   top: 200px;
   left:650px;
   z-index: 6;
+  border-radius: 16px;
+  box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.658),0 17px 50px 0 rgba(0, 0, 0, 0.575);
+
 }
 .out{
   position: relative;
   top: -18px;
   left: 0;
-  border-radius: 0;
+  border-radius: 50%;
   font-size: 15px;
   background-color: aliceblue;
   color:black;
@@ -180,6 +192,7 @@ input{
   font-size: 15px;
   background-color: aliceblue;
   color:black;
+  border-radius: 50%;
   transition: 0.5s;
 }
 .out2:hover{
