@@ -42,9 +42,9 @@
 </div>
 
   <div class = "input" [style.display]="save ? 'block' : 'none'">
-    <button (click)="state(2)" class="out2">🞮</button>
-  <button class = "downloadbut" (click)="state(2)"> <a href="http://localhost:8080/file/save/Xml"  download>as .xml</a></button>
-  <button class = "downloadbut" (click)="state(2)"><a href="http://localhost:8080/file/save/JSON"  download>as .json</a></button>
+  <button (click)="state(2)" class="out2">🞮</button>
+ <a  (click)="state(2)"  href="http://localhost:8080/file/save/Xml"  download>as .xml</a>
+ <a  (click)="state(2)"  href="http://localhost:8080/file/save/JSON"  download>as .json</a>
   </div>
 
 <div  [style.display]="isSpecial ? 'block' : 'none'" class="uplo">
